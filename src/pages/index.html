@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="../css/app.css" />
+        <script src="https://kit.fontawesome.com/753d009a2f.js" crossorigin="anonymous"></script>
+        <script defer src="../scripts/app.js"></script>
+        <title>Todo app</title>
+    </head>
+    <body class="min-h-screen bg-darkGrey py-3 px-4 flex flex-col gap-4">
+        <nav
+            id="navbar"
+            class="bg-lightGrey flex gap-6 py-4 px-3 rounded-md border-2 border-contrastColor border-solid"
+        >
+            <header>
+                <h1 class="font-medium text-white text-lg leading-6 select-none">
+                    My <br />
+                    Todos
+                </h1>
+            </header>
+            <div class="grow flex relative overflow-hidden">
+                <button
+                    id="search-btn"
+                    class="border-2 rounded-md rounded-r-none w-12 h-full border-contrastColor hover:bg-contrastColor transition-colors flex items-center justify-center"
+                >
+                    <i class="fa-solid fa-magnifying-glass font-icon"></i>
+                </button>
+                <input
+                    id="search-input"
+                    class="rounded-md rounded-l-none w-full pl-4 text-white text-xl font-medium antialiased bg-lightGrey border-2 border-contrastColor border-solid border-l-0 focus: outline-white placeholder:animate-spin"
+                    placeholder="Search your todo ..."
+                    type="search"
+                />
+            </div>
+            <ul
+                class="center gap-6 bg-neutral-500 rounded-lg p-4 py-3 border-2 border-neutral-400 app-option--hidden transition-transform origin-right"
+            >
+                <li>
+                    <button aria-label="Theme" class="center relative hover:tooltip hover:before:opacity-100">
+                        <i class="fa-solid fa-sun font-icon"></i>
+                    </button>
+                </li>
+                <li>
+                    <button
+                        aria-label="Sort"
+                        class="center relative hover:tooltip before:transition-opacity hover:before:opacity-100"
+                    >
+                        <i class="fa-solid fa-arrow-down-a-z font-icon"></i>
+                    </button>
+                </li>
+            </ul>
+            <button id="button-app-options" class="flex flex-col gap-2 min-h-full justify-center">
+                <span class="button-line transition-transform"></span>
+                <span class="button-line transition-transform"></span>
+                <span class="button-line transition-transform"></span>
+            </button>
+        </nav>
+        <main
+            id="todo-container"
+            class="bg-neutral-600 border border-neutral-500 grow rounded-md p-4 flex items-start gap-4"
+        >
+            <form class="flex-col gap-2 bg-neutral-500 p-5 rounded-md scale-y-0 hidden">
+                <div class="flex flex-col">
+                    <label class="label-style" for="title">Title</label>
+                    <input class="input-style" id="title" type="text" />
+                </div>
+                <div class="flex flex-col">
+                    <label class="label-style" for="description">Description</label>
+                    <textarea class="input-style h-40" id="description"></textarea>
+                </div>
+                <div class="flex flex-col">
+                    <label class="label-style" for="todo-importance">Importance</label>
+                    <select class="rounded-sm focus:outline-neutral-800 focus:outline-offset-2" id="todo-importance">
+                        <option class="option-style">Choose one below or left blank</option>
+                        <option class="option-style">less important</option>
+                        <option class="option-style">more important</option>
+                        <option class="option-style">very important</option>
+                    </select>
+                </div>
+            </form>
+            <button
+                id="add-todo-btn"
+                class="w-1/6 bg-neutral-400 rounded-md py-10 text-2xl font-medium text-black border border-neutral-300 hover:bg-neutral-300 transition-colors"
+            >
+                Add <br />
+                todo
+            </button>
+            <!-- <h2 class="text-neutral-300 text-3xl">You have no todos yet.</h2> -->
+        </main>
+    </body>
+</html>
