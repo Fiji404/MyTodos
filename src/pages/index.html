@@ -5,6 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" href="../css/app.css" />
+        <link rel="icon" href="../assets/icons/app-icon.png" />
         <script src="https://kit.fontawesome.com/753d009a2f.js" crossorigin="anonymous"></script>
         <script defer src="../scripts/app.js"></script>
         <title>Todo app</title>
@@ -29,7 +30,7 @@
                 </button>
                 <input
                     id="search-input"
-                    class="rounded-md rounded-l-none w-full pl-4 text-white text-xl font-medium antialiased bg-lightGrey border-2 border-contrastColor border-solid border-l-0 focus: outline-white placeholder:animate-spin"
+                    class="rounded-md rounded-l-none w-full pl-4 text-white text-xl font-medium antialiased bg-lightGrey border-2 border-contrastColor border-solid border-l-0 focus: outline-white placeholder:animate-spin focus: shadow-neutral-800"
                     placeholder="Search your todo ..."
                     type="search"
                 />
@@ -59,35 +60,16 @@
         </nav>
         <main
             id="todo-container"
-            class="bg-neutral-600 border border-neutral-500 grow rounded-md p-4 flex items-start gap-4"
+            class="bg-neutral-600 border border-neutral-500 grow rounded-md p-5 gap-6 flex justify-start items-start flex-wrap relative content-start"
         >
-            <form class="flex-col gap-2 bg-neutral-500 p-5 rounded-md scale-y-0 hidden">
-                <div class="flex flex-col">
-                    <label class="label-style" for="title">Title</label>
-                    <input class="input-style" id="title" type="text" />
-                </div>
-                <div class="flex flex-col">
-                    <label class="label-style" for="description">Description</label>
-                    <textarea class="input-style h-40" id="description"></textarea>
-                </div>
-                <div class="flex flex-col">
-                    <label class="label-style" for="todo-importance">Importance</label>
-                    <select class="rounded-sm focus:outline-neutral-800 focus:outline-offset-2" id="todo-importance">
-                        <option class="option-style">Choose one below or left blank</option>
-                        <option class="option-style">less important</option>
-                        <option class="option-style">more important</option>
-                        <option class="option-style">very important</option>
-                    </select>
-                </div>
-            </form>
             <button
                 id="add-todo-btn"
-                class="w-1/6 bg-neutral-400 rounded-md py-10 text-2xl font-medium text-black border border-neutral-300 hover:bg-neutral-300 transition-colors"
+                class="w-64 bg-neutral-400 rounded-md py-10 text-2xl font-medium text-black border border-neutral-300 hover:bg-neutral-300 transition-all"
             >
                 Add <br />
                 todo
             </button>
-            <!-- <h2 class="text-neutral-300 text-3xl">You have no todos yet.</h2> -->
+            <!-- <h2 class="text-neutral-300 text-3xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">You have no todos yet.</h2> -->
         </main>
     </body>
 </html>

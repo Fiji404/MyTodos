@@ -2,14 +2,17 @@
   "name": "my-todos",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "parcel src/pages/index.html",
+    "build": "parcel build src/pages/index.html",
+    "tailwind-watch": "tailwind -i ./src/css/index.css -o ./src/css/app.css --watch --minify",
+    "tailwind-build": "tailwind build ./src/css/index.css -o ./src/css/app.css && parcel build ./src/pages/index.html"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "parcel": "^2.7.0"
+    "parcel": "^2.7.0",
+    "tailwindcss": "^3.1.8"
   }
 }
