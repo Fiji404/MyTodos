@@ -4,19 +4,22 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="App for managing your tasks." />
+        <meta name="keywords" content="tasks, todo, list, manage, app" />
         <link rel="stylesheet" href="../css/app.css" />
         <link rel="icon" href="../assets/icons/app-icon.png" />
         <script src="https://kit.fontawesome.com/753d009a2f.js" crossorigin="anonymous"></script>
-        <script defer src="../scripts/app.js"></script>
+        <link rel="stylesheet" href="https://unpkg.com/js-datepicker/dist/datepicker.min.css" />
+        <script defer type="module" src="../scripts/app.js"></script>
         <title>Todo app</title>
     </head>
-    <body class="min-h-screen bg-darkGrey py-3 px-4 flex flex-col gap-4">
+    <body class="min-h-screen bg-neutral-800 py-3 px-4 flex flex-col gap-4 dark:bg-neutral-50 transition-colors">
         <nav
             id="navbar"
-            class="bg-lightGrey flex gap-6 py-4 px-3 rounded-md border-2 border-contrastColor border-solid"
+            class="bg-neutral-600 flex gap-6 py-4 px-3 rounded-md border border-neutral-500 border-solid dark:bg-neutral-100 transition-colors"
         >
             <header>
-                <h1 class="font-medium text-white text-lg leading-6 select-none">
+                <h1 class="font-medium text-neutral-100 text-lg leading-6 select-none dark:text-black">
                     My <br />
                     Todos
                 </h1>
@@ -24,23 +27,24 @@
             <div class="grow flex relative overflow-hidden">
                 <button
                     id="search-btn"
-                    class="border-2 rounded-md rounded-r-none w-12 h-full border-contrastColor hover:bg-contrastColor transition-colors flex items-center justify-center"
+                    class="border-2 rounded-md rounded-r-none w-12 h-full border-neutral-500 hover:bg-neutral-500 transition-colors flex items-center justify-center dark:border-neutral-300 dark:hover:bg-neutral-200"
                 >
-                    <i class="fa-solid fa-magnifying-glass font-icon"></i>
+                    <i class="fa-solid fa-magnifying-glass font-icon dark:text-neutral-900"></i>
                 </button>
                 <input
                     id="search-input"
-                    class="rounded-md rounded-l-none w-full pl-4 text-white text-xl font-medium antialiased bg-lightGrey border-2 border-contrastColor border-solid border-l-0 focus: outline-white placeholder:animate-spin focus: shadow-neutral-800"
+                    class="rounded-md rounded-l-none w-full pl-4 text-neutral-50 text-xl font-medium antialiased bg-neutral-700 border-2 border-neutral-500 border-solid border-l-0 focus: outline-neutral-100 placeholder:animate-spin focus: shadow-neutral-800 dark:bg-neutral-100 dark:border-neutral-300 dark:text-neutral-900 dark:focus:outline-neutral-900"
                     placeholder="Search your todo ..."
                     type="search"
                 />
             </div>
             <ul
-                class="center gap-6 bg-neutral-500 rounded-lg p-4 py-3 border-2 border-neutral-400 app-option--hidden transition-transform origin-right"
+                class="center gap-6 bg-neutral-500 rounded-md p-4 py-3 border border-neutral-400 app-option--hidden transition-transform origin-right dark:border-neutral-300 dark:bg-neutral-100"
             >
                 <li>
-                    <button aria-label="Theme" class="center relative hover:tooltip hover:before:opacity-100">
-                        <i class="fa-solid fa-sun font-icon"></i>
+                    <button id="theme-btn" aria-label="Theme" class="center relative tooltip hover:tooltip--active">
+                        <span class="sun-icon center"><i class="fa-solid fa-sun font-icon dark:text-black"></i></span>
+                        <span class="moon-icon center"><i class="fa-solid fa-moon font-icon"></i></span>
                     </button>
                 </li>
                 <li>
@@ -48,23 +52,23 @@
                         aria-label="Sort"
                         class="center relative hover:tooltip before:transition-opacity hover:before:opacity-100"
                     >
-                        <i class="fa-solid fa-arrow-down-a-z font-icon"></i>
+                        <i class="fa-solid fa-arrow-down-a-z font-icon dark:text-black"></i>
                     </button>
                 </li>
             </ul>
             <button id="button-app-options" class="flex flex-col gap-2 min-h-full justify-center">
-                <span class="button-line transition-transform"></span>
-                <span class="button-line transition-transform"></span>
-                <span class="button-line transition-transform"></span>
+                <span class="button-line dark:bg-neutral-900 transition-transform dark:bg-dark"></span>
+                <span class="button-line dark:bg-neutral-900 transition-transform"></span>
+                <span class="button-line dark:bg-neutral-900 transition-transform"></span>
             </button>
         </nav>
         <main
             id="todo-container"
-            class="bg-neutral-600 border border-neutral-500 grow rounded-md p-5 gap-6 flex justify-start items-start flex-wrap relative content-start"
+            class="bg-neutral-600 border border-neutral-500 grow rounded-md p-5 gap-6 flex justify-start flex-wrap relative content-start dark:bg-neutral-100 transition-colors"
         >
             <button
                 id="add-todo-btn"
-                class="w-64 bg-neutral-400 rounded-md py-10 text-2xl font-medium text-black border border-neutral-300 hover:bg-neutral-300 transition-all"
+                class="w-64 bg-neutral-400 rounded-md py-10 text-2xl font-medium border-2 border-neutral-300 dark:border-neutral-300 hover:bg-neutral-300 dark:bg-neutral-100 dark:hover:bg-neutral-200 max-h-48 transition-colors"
             >
                 Add <br />
                 todo

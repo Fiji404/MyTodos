@@ -19,7 +19,7 @@
         transform: translateY(-13px) rotate(-45deg);
     }
     .font-icon {
-        @apply text-white text-xl
+        @apply text-neutral-100 text-xl h-5
     }
     .center {
         @apply flex justify-center items-center;
@@ -29,8 +29,24 @@
        @apply w-0 overflow-hidden scale-0;
     }
 
+    #theme-btn .sun-icon {
+        @apply hidden
+    }
+
+    #theme-btn.active .sun-icon {
+       @apply flex;
+    }
+
+    #theme-btn.active .moon-icon {
+        @apply hidden;
+    }
+
     .tooltip {
-        @apply before:content-[attr(aria-label)] text-white font-medium before:absolute before:top-4 before:left-1/2 before:-translate-x-1/2 before:translate-y-full before:bg-neutral-500 before:border-2 before:border-neutral-400 before:px-3 before:rounded-md before:opacity-0 transition-opacity;
+        @apply before:content-[attr(aria-label)] text-neutral-100 font-medium before:absolute before:top-4 before:left-1/2 before:-translate-x-1/2 before:translate-y-full before:bg-neutral-800 before:border before:border-neutral-400 before:px-3 before:rounded-md before:opacity-0 z-10 transition-opacity;
+    }
+
+    .tooltip--active {
+        @apply before:opacity-100;
     }
 
     .option-style {
@@ -38,14 +54,21 @@
     }
 
     .input-style {
-        @apply rounded-sm h-10 text-sky-50 px-2 py-1 bg-neutral-500 border border-neutral-400 focus:outline-neutral-300 focus:outline-1
+        @apply rounded-sm h-10 text-sky-50 px-2 py-1 bg-neutral-500 border border-neutral-400 focus:outline-neutral-300 focus:outline-1 text-lg
+    }
+
+    .input-style--dark {
+        @apply bg-neutral-100 border-neutral-300 focus:outline-neutral-900 text-neutral-900
     }
 
     .label-style {
         @apply text-sky-50 text-lg w-fit
     }
     .search--active {
-        @apply bg-green-400 border-green-600 !important;
+        @apply bg-green-400 border-green-600 dark:bg-green-600 dark:border-green-700 !important;
+    }
+    .search--active > i {
+       @apply dark:text-neutral-100
     }
     .search--active:hover {
         @apply bg-green-900 border-green-700 !important;

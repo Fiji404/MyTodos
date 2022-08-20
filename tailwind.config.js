@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     content: ['./src/**/*.{html,js}'],
+    darkMode: 'class',
     theme: {
         extend: {
             animation: {
@@ -19,24 +20,8 @@ module.exports = {
             lg: '1080px',
             xl: '1280px',
         },
-        extend: {
-            colors: {
-                transparent: 'transparent',
-                current: 'currentColor',
-                white: 'rgb(220, 220, 220)',
-                darkerWhite: 'rgb(140, 140, 140)',
-                darkGrey: 'rgb(35, 35, 35)',
-                lightGrey: 'rgb(75, 75, 75)',
-                contrastColor: 'rgb(90, 90, 90)',
-                lightBlue: 'blue',
-                green: {
-                    400: '#15803d',
-                },
-            },
-        },
         fontFamily: {
             sans: ['Poppins', 'sans-serif'],
         },
-        plugins: [require('tailwindcss/colors')],
     },
 };
