@@ -1,24 +1,26 @@
 import datepicker from 'js-datepicker';
+import { createNotyficationElement } from './utils/notyficationPopUp';
+
 class App {
-    addNewTodoFormEl;
-    userTodos = [];
-    addTodoBtn = document.getElementById('add-todo-btn');
-    todosContainer = document.getElementById('todo-container');
+    #addTodoForm;
+    #addTodoBtn = document.getElementById('add-todo-btn');
+    #todosContainer = document.getElementById('todo-container');
+    #datepickerEl;
     constructor() {
-        this.registerClickEventsInTodoContainer();
+        this.listenClickEventsInTodoContainer();
         window.addEventListener('DOMContentLoaded', this.getUserTodosFromLS.bind(this));
     }
 
-    registerClickEventsInTodoContainer() {
-        this.todosContainer.addEventListener('click', ({ target }) => {
-            if (target === this.todosContainer) return;
-            if (target === this.addTodoBtn) this.addNewTodoForm();
-            if (target.closest('#cancel-add-todo-btn')) this.cancelAddNewTodoAction();
+    listenClickEventsInTodoContainer() {
+        this.#todosContainer.addEventListener('click', ({ target }) => {
+            if (target === this.#todosContainer) return;
+            if (target === this.#addTodoBtn) this.showTodoForm();
+            if (target.closest('#cancel-add-todo-btn')) this.cancelFromAddingNewTodo();
         });
     }
 
-    addNewTodoForm() {
-        this.addTodoBtn.setAttribute('disabled', '');
+    showTodoForm() {
+        this.#addTodoBtn.setAttribute('disabled', '');
         const todoFormHTMLTemplate = `
         <form
                 id="add-todo-form"
@@ -35,14 +37,14 @@ class App {
                 </button>
                 <div class="flex flex-col gap-1">
                     <label class="label-style dark:text-neutral-900" for="title">Title</label>
-                    <input class="input-style dark:input-style--dark" id="title" type="text" required />
+                    <input class="input-style dark:input-style--dark" id="title" type="text"  />
                 </div>
                 <div class="flex flex-col gap-1">
                     <label class="label-style dark:text-neutral-900" for="description">Description</label>
                     <textarea
                         class="input-style h-40 resize-none scroll-pt-60 dark:input-style--dark"
                         id="description"
-                        required
+                        
                     ></textarea>
                 </div>
                 <div class="flex flex-col gap-1">
@@ -65,90 +67,115 @@ class App {
                     Add Todo <i class="fa-solid fa-check"></i>
                 </button>
             </form>`;
-        this.addTodoBtn.insertAdjacentHTML('beforebegin', todoFormHTMLTemplate);
-        this.replaceFormDatepicker();
-        this.addNewTodoFormEl = document.getElementById('add-todo-form');
-        this.addNewTodoFormEl.addEventListener('submit', this.handleNewAddedTodo.bind(this));
+        this.#addTodoBtn.insertAdjacentHTML('beforebegin', todoFormHTMLTemplate);
+        this.insertDatepickerElement();
+        this.#addTodoForm = document.getElementById('add-todo-form');
+        this.#addTodoForm.addEventListener('submit', this.appendNewTodo.bind(this));
     }
 
-    replaceFormDatepicker() {
-        const dateInputElement = document.querySelector('#finish-date');
-        const newDatepicker = datepicker(dateInputElement, {
-            minDate: new Date(),
-        });
+    insertDatepickerElement() {
+        const dateInputEl = document.querySelector('#finish-date');
+        this.#datepickerEl = datepicker(dateInputEl, { minDate: new Date() });
     }
 
-    cancelAddNewTodoAction() {
-        this.addNewTodoFormEl.remove();
-        this.addTodoBtn.removeAttribute('disabled', '');
+    cancelFromAddingNewTodo() {
+        this.#addTodoForm.remove();
+        this.#addTodoBtn.removeAttribute('disabled');
     }
 
-    handleNewAddedTodo(e) {
+    appendNewTodo(e) {
         e.preventDefault();
-        const todoTitle = document.getElementById('title').value;
-        const todoDescription = document.getElementById('description').value;
-        const finishTodoDateObject = new Date(document.getElementById('finish-date').value.split('-').join());
+        const todoTitle = document.getElementById('title');
+        const todoDesc = document.getElementById('description');
+        const finishTodoDate = this.#datepickerEl.dateSelected?.toISOString();
         const todoPriority = document.getElementById('todo-importance').value;
-        if (!this.checkProvidedValuesForNewTodo(todoTitle, todoDescription))
-            return alert('Check your title and description fields');
-        const todo = new Todo(todoTitle, todoDescription, finishTodoDateObject, todoPriority);
+        if (!this.validateFormData(todoTitle, todoDesc)) return createNotyficationElement('Check provided data !');
+        const todo = new Todo(todoTitle.value, todoDesc.value, finishTodoDate, todoPriority);
         const userTodosFromLS = JSON.parse(localStorage.getItem('todos')) || [];
         userTodosFromLS.push(todo);
         localStorage.setItem('todos', JSON.stringify(userTodosFromLS));
-        this.addNewTodoFormEl.remove();
-        this.addTodoBtn.removeAttribute('disabled');
-        e.target.reset();
+        this.#addTodoForm.remove();
+        this.#addTodoBtn.removeAttribute('disabled');
     }
 
-    checkProvidedValuesForNewTodo(...inputs) {
-        return inputs.every(el => el.length > 0);
+    validateFormData(...inputs) {
+        return inputs.every(input => {
+            if (!input.value) {
+                input.style.borderColor = 'red';
+                return false;
+            }
+            input.removeAttribute('style');
+            return true;
+        });
     }
 
     getUserTodosFromLS() {
         const localStorageTodos = JSON.parse(localStorage.getItem('todos'));
         if (!localStorageTodos) return;
-        this.renderUserTodos(localStorageTodos);
+        this.appendTodosFromLS(localStorageTodos);
     }
 
-    renderUserTodos = todos => {
+    appendTodosFromLS(todos) {
         todos.forEach(({ title, description, date, importance }) => new Todo(title, description, date, importance));
-    };
+    }
 }
 
 class Navbar {
-    navbarEl = document.getElementById('navbar');
-    searchBar = document.getElementById('search-input');
-    searchTodoBtn = document.getElementById('search-btn');
+    #navbarEl = document.getElementById('navbar');
+    #searchBar = document.getElementById('search-input');
+    #searchTodoBtn = document.getElementById('search-btn');
     constructor() {
-        this.navbarEl.addEventListener('click', this.registerClickEventsInNavbar.bind(this));
-        this.searchBar.addEventListener('input', this.registerInputEventsInSearchBar.bind(this));
-        this.getUserThemeFromLS();
+        this.#navbarEl.addEventListener('click', this.listenClickEventsInNavbar.bind(this));
+        this.#searchBar.addEventListener('input', this.listenInputEventsInSearchBar.bind(this));
+        this.checkUserPreferences();
     }
 
-    registerClickEventsInNavbar({ target }) {
-        const targetElement =
-            target.closest('#search-btn') || target.closest('#button-app-options') || target.closest('#theme-btn');
-        if (!targetElement) return;
-        if (targetElement.matches('#search-btn'))
-            targetElement.nextElementSibling.value || targetElement.nextElementSibling.focus();
-        if (targetElement.matches('#button-app-options')) {
-            targetElement.classList.toggle('button-hamburger--active-state');
-            targetElement.previousElementSibling.classList.toggle('app-option--hidden');
+    listenClickEventsInNavbar({ target }) {
+        const navbarTargetElement =
+            target.closest('#search-btn') ||
+            target.closest('#button-app-options') ||
+            target.closest('#theme-btn') ||
+            target.closest('#change-order-btn');
+        if (!navbarTargetElement) return;
+        if (navbarTargetElement.matches('#search-btn')) {
+            if (navbarTargetElement.nextElementSibling.value)
+                this.searchTodoItem(navbarTargetElement.nextElementSibling.value);
+            else navbarTargetElement.nextElementSibling.focus();
         }
-        if (targetElement.matches('#theme-btn')) this.changeUserTheme(targetElement);
+        if (navbarTargetElement.matches('#button-app-options')) {
+            navbarTargetElement.classList.toggle('button-hamburger--active-state');
+            navbarTargetElement.previousElementSibling.classList.toggle('app-option--hidden');
+        }
+        if (navbarTargetElement.matches('#theme-btn')) this.changeUserTheme(navbarTargetElement);
     }
 
-    registerInputEventsInSearchBar({ target: { value } }) {
-        this.searchTodoBtn.classList.toggle('search--active', !!value);
+    listenInputEventsInSearchBar({ target: { value } }) {
+        this.#searchTodoBtn.classList.toggle('search--active', !!value);
     }
 
-    getUserThemeFromLS() {
-        const themePreferenceInLS = localStorage.getItem('Theme');
-        if (!themePreferenceInLS) return;
+    searchTodoItem(todoName) {
+        const todoElement = [...document.querySelectorAll('.todo-container__item')].find(
+            todoTitle => todoTitle.querySelector('h2').textContent === todoName
+        );
+        const todoElementTitle = todoElement.querySelector('h2');
+        const selection = window.getSelection();
+        const range = document.createRange();
+        range.selectNodeContents(todoElementTitle);
+        selection.removeAllRanges();
+        selection.addRange(range);
+        todoElement.classList.add('selected');
+        setTimeout(() => todoElement.classList.remove('selected'), 4000);
+    }
+
+    checkUserPreferences() {
+        const userThemeFromLS = localStorage.getItem('Theme');
+        if (userThemeFromLS) this.loadUserThemeFromLS(userThemeFromLS);
+    }
+
+    loadUserThemeFromLS(theme) {
         const themeBtn = document.getElementById('theme-btn');
-        const setButtonThemeIcon =
-            themePreferenceInLS === 'dark' ? themeBtn.classList.add('active') : themeBtn.classList.remove('active');
-        document.documentElement.classList.add(themePreferenceInLS);
+        theme === 'dark' ? themeBtn.classList.add('active') : themeBtn.classList.remove('active');
+        document.documentElement.classList.add(theme);
     }
 
     changeUserTheme(changeThemeBtn) {
@@ -163,41 +190,133 @@ class Navbar {
         localStorage.setItem('Theme', document.documentElement.className);
     }
 }
-
 class Todo {
+    #todosContainer = document.getElementById('todo-container');
+    #todoElements;
+    #initialDraggedElement;
     constructor(title, description, date, importance) {
         this.title = title;
         this.description = description;
-        this.date = date;
+        this.date = date || null;
         this.importance = importance || null;
         this.renderTodo(title, description, date, importance);
+        document.querySelector('#change-order-btn').addEventListener('click', this.enableTodosReOrder.bind(this));
     }
 
-    renderTodo(title, description, date) {
+    renderTodo(title, description, date, importance) {
         const addTodoBtn = document.getElementById('add-todo-btn');
-        const dateToObject = new Date(date);
+        const dateObject = new Date(date);
+        const comparedFinishDateToCurrentDate = this.compareFinishDayToCurrentDay(dateObject.getDate());
+        console.log(importance);
+        const checkTodoImportance =
+            importance === 'less'
+                ? 'bg-grey-200'
+                : importance === 'more'
+                ? 'bg-neutral-300'
+                : importance === 'very'
+                ? 'bg-red-500'
+                : importance;
         const todoHTMLTemplate = `
-            <section
-    class="bg-neutral-500 dark:bg-neutral-200 rounded-md overflow-hidden todo-container__item border border-neutral-300 pb-4 todo-container__item grow dark:border-neutral-400 max-h-44
+            <section 
+    class="bg-neutral-500 dark:bg-neutral-200 rounded-md overflow-hidden todo-container__item border border-neutral-300 pb-4 todo-container__item grow dark:border-neutral-400
      transition-colors"
 >
     <header class="py-3 border-b border-b-neutral-400 bg-neutral-600 dark:bg-neutral-300 transition-colors">
-        <h2 class="text-2xl text-center font-semibold text-neutral-100 dark:text-neutral-900 transition-colors">${title}</h2>
+        <h2 class="text-3xl text-center font-semibold text-neutral-100 dark:text-neutral-900 transition-colors">${title}</h2>
     </header>
     <div class="px-2">
         <p class="mt-4 text-neutral-50 font-medium text-xl dark:text-neutral-900 transition-colors">${description}</p>
-        <div class="mt-8 ml-auto w-fit">
-            <p class="inline text-neutral-100 dark:text-neutral-900 transition-colors">Ends on</p>
-            <time 
-                class="bg-neutral-600 px-3 py-1 rounded-md w-fit ml-auto text-neutral-100 border border-neutral-400 select-none dark:bg-neutral-100 dark:text-neutral-900 transition-colors"
-                datetime="17.04.2022"
-                >${dateToObject.getDate()}.${dateToObject.getMonth()}.${dateToObject.getFullYear()}</time
-            >
+        ${
+            !date
+                ? ''
+                : `<div class="mt-8 ml-auto w-fit">
+            <p class="inline text-neutral-100 dark:text-neutral-900 transition-colors">Ends</p>
+            
+                 
+                    <time
+                        class="bg-neutral-600 px-3 py-1 rounded-md w-fit ml-auto text-neutral-100 border border-neutral-400 select-none dark:bg-neutral-100 dark:text-neutral-900 transition-colors"
+                        datetime="17.04.2022"
+                    >
+                        ${
+                            comparedFinishDateToCurrentDate === dateObject.getDate()
+                                ? `${comparedFinishDateToCurrentDate}.${dateObject.getMonth()}.${dateObject.getFullYear()}`
+                                : this.compareFinishDayToCurrentDay(dateObject.getDate())
+                        }
+                    </time>`
+        }
         </div>
     </div>
 </section>
         `;
         addTodoBtn.insertAdjacentHTML('beforebegin', todoHTMLTemplate);
+        this.#todoElements = this.#todosContainer.querySelectorAll('.todo-container__item');
+    }
+
+    enableTodosReOrder() {
+        if (document.body.dataset.disabled) return document.body.removeAttribute('data-disabled');
+        document.body.dataset.disabled = true;
+        this.setDragEventsOnTodos();
+    }
+
+    setDragEventsOnTodos() {
+        if (!document.body.dataset.disabled) return;
+        this.#todoElements.forEach(todo => {
+            todo.classList.add('dragging-enabled');
+            todo.setAttribute('draggable', 'true');
+        });
+        this.#todosContainer.addEventListener('dragstart', this.todoDragStart.bind(this));
+        this.#todosContainer.addEventListener('dragend', this.handleDragEnd.bind(this));
+        //? todosContainer.addEventListener('dragover', this.handleDragOver);
+        this.#todosContainer.addEventListener('dragleave', this.handleDragLeave);
+        this.#todosContainer.addEventListener('dragenter', this.handleDragEnter);
+        this.#todosContainer.addEventListener('drop', this.handleDrop.bind(this));
+    }
+
+    todoDragStart(e) {
+        e.target.classList.add('dragging');
+        this.#initialDraggedElement = e.target;
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/html', this.#initialDraggedElement.innerHTML);
+    }
+
+    todoDragEnd(e) {
+        e.target.classList.remove('dragging');
+        // this.#todoElements.forEach(todo => todo.classList.remove('over'));
+    }
+
+    // handleDragOver(e) {
+    //     e.preventDefault();
+    //     return false;
+    // }
+
+    handleDragLeave(e) {
+        e.target.classList.remove('over');
+    }
+
+    handleDragEnter(e) {
+        e.target.classList.add('over');
+    }
+
+    handleDrop(e) {
+        e.stopPropagation();
+        if (e.target.closest('todo-container__item') === this.#initialDraggedElement) return;
+
+        console.log(e);
+        this.#initialDraggedElement.innerHTML = e.target.closest('.todo-container__item').innerHTML;
+        e.target.closest('todo-container__item').innerHTML = e.dataTransfer.getData('text/html');
+    }
+
+    compareFinishDayToCurrentDay(day) {
+        const currentDay = new Date().getDate();
+        return day === currentDay
+            ? 'Today'
+            : day === currentDay + 1
+            ? 'Tomorrow'
+            : day === currentDay + 2
+            ? 'In 2 days'
+            : day === currentDay + 3
+            ? 'In 3 days'
+            : day;
     }
 }
 

@@ -10,7 +10,7 @@
         @apply w-10 h-1 block rounded-md bg-white;
     }
     .button-hamburger--active-state .button-line:nth-child(2) {
-        @apply opacity-0
+        @apply opacity-0;
     }
     .button-hamburger--active-state .button-line:nth-child(1) {
         transform: translate(0, 12px) rotate(45deg);
@@ -19,26 +19,30 @@
         transform: translateY(-13px) rotate(-45deg);
     }
     .font-icon {
-        @apply text-neutral-100 text-xl h-5
+        @apply text-neutral-100 text-xl h-5;
     }
     .center {
         @apply flex justify-center items-center;
     }
 
     .app-option--hidden {
-       @apply w-0 overflow-hidden scale-0;
+        @apply w-0 overflow-hidden scale-0;
     }
 
     #theme-btn .sun-icon {
-        @apply hidden
+        @apply hidden;
     }
 
     #theme-btn.active .sun-icon {
-       @apply flex;
+        @apply flex;
     }
 
     #theme-btn.active .moon-icon {
         @apply hidden;
+    }
+
+    .sort-items--active {
+        @apply text-green-500 !important;
     }
 
     .tooltip {
@@ -50,25 +54,25 @@
     }
 
     .option-style {
-        @apply bg-neutral-700 text-white cursor-pointer
+        @apply bg-neutral-700 text-white cursor-pointer;
     }
 
     .input-style {
-        @apply rounded-sm h-10 text-sky-50 px-2 py-1 bg-neutral-500 border border-neutral-400 focus:outline-neutral-300 focus:outline-1 text-lg
+        @apply rounded-sm h-10 text-sky-50 px-2 py-1 bg-neutral-500 border border-neutral-400 focus:outline-neutral-300 focus:outline-1 text-lg;
     }
 
     .input-style--dark {
-        @apply bg-neutral-100 border-neutral-300 focus:outline-neutral-900 text-neutral-900
+        @apply bg-neutral-100 border-neutral-300 focus:outline-neutral-900 text-neutral-900;
     }
 
     .label-style {
-        @apply text-sky-50 text-lg w-fit
+        @apply text-sky-50 text-lg w-fit;
     }
     .search--active {
-        @apply bg-green-400 border-green-600 dark:bg-green-600 dark:border-green-700 !important;
+        @apply bg-green-600 border-green-600 dark:bg-green-600 dark:border-green-700 !important;
     }
     .search--active > i {
-       @apply dark:text-neutral-100
+        @apply dark:text-neutral-100;
     }
     .search--active:hover {
         @apply bg-green-900 border-green-700 !important;
@@ -79,5 +83,74 @@
     .todo-container__item {
         min-width: 300px;
         max-width: 400px;
+    }
+
+    .todo-container__item.selected {
+        animation: showUp 1s forwards;
+    }
+
+    @keyframes showUp {
+        to {
+            @apply scale-110 shadow-lg;
+        }
+    }
+
+    .todo-container__item h2::selection {
+        @apply bg-black text-white;
+    }
+
+    .todo-container__item.dragging-enabled {
+        cursor: move;
+        z-index: 30;
+    }
+
+    .todo-container__item.dragging {
+        @apply opacity-40;
+    }
+
+    .todo-container__item.dragging * {
+        @apply pointer-events-none;
+    }
+    .todo-container__item.over {
+        @apply border-2 border-dashed;
+    }
+
+    .todo--very-important {
+        @apply bg-red-500;
+    }
+
+    body[data-disabled]::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0.86);
+        z-index: 10;
+    }
+    body[data-disabled] .button-line {
+        @apply bg-neutral-200;
+    }
+    body[data-disabled] #change-order-btn > i {
+        @apply text-green-400 z-20;
+    }
+    .notyfication-popup {
+        --timer-duration: 5s;
+        @apply fixed top-0 left-1/2 -translate-x-1/2 -translate-y-full font-bold text-2xl bg-neutral-500 py-4 px-6 rounded-md border border-neutral-300 text-neutral-50 overflow-hidden dark:bg-neutral-100 dark:text-black dark:border-neutral-400 transition-transform cursor-pointer;
+    }
+    .notyfication-popup.visible {
+        animation: showIn 400ms ease-in forwards;
+    }
+    .notyfication-popup.visible::before {
+        @apply content-[''] absolute bottom-0 left-0 w-full h-1 bg-orange-400;
+        animation: shrinkToZero var(--timer-duration) 400ms linear forwards;
+    }
+    @keyframes showIn {
+        to {
+            @apply translate-y-4;
+        }
+    }
+    @keyframes shrinkToZero {
+        to {
+            @apply w-0;
+        }
     }
 }
