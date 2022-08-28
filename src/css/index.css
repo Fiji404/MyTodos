@@ -46,12 +46,44 @@
     }
 
     .tooltip {
-        @apply before:content-[attr(aria-label)] text-neutral-100 font-medium before:absolute before:top-4 before:left-1/2 before:-translate-x-1/2 before:translate-y-full before:bg-neutral-800 before:border before:border-neutral-400 before:px-3 before:rounded-md before:opacity-0 z-10 transition-opacity;
+        @apply bg-neutral-700 text-neutral-50 px-2 rounded-md border border-neutral-900 font-semibold dark:bg-neutral-50 dark:border-neutral-300 dark:text-black opacity-0 z-20;
+        animation: originate 500ms ease forwards;
+    }
+    .tooltip > div,
+    .tooltip > div::before {
+        position: absolute;
+
+        top: -2px;
+        width: 8px;
+        height: 8px;
+        background: inherit;
     }
 
-    .tooltip--active {
-        @apply before:opacity-100;
+    .tooltip > div {
+        visibility: hidden;
     }
+
+    .tooltip > div::before {
+        visibility: visible;
+        content: '';
+        transform: rotate(45deg);
+    }
+
+    /* .tooltip[data-popper-placement^='top'] > #arrow {
+        bottom: -4px;
+    }
+
+    .tooltip[data-popper-placement^='bottom'] > #arrow {
+        top: -4px;
+    }
+
+    .tooltip[data-popper-placement^='left'] > #arrow {
+        right: -4px;
+    }
+
+    .tooltip[data-popper-placement^='right'] > #arrow {
+        left: -4px;
+    } */
 
     .option-style {
         @apply bg-neutral-700 text-white cursor-pointer;
@@ -95,6 +127,18 @@
         }
     }
 
+    @keyframes originate {
+        to {
+            @apply opacity-100;
+        }
+    }
+
+    @keyframes hideIn {
+        to {
+            @apply opacity-0;
+        }
+    }
+
     .todo-container__item h2::selection {
         @apply bg-black text-white;
     }
@@ -104,13 +148,14 @@
         z-index: 30;
     }
 
+    .todo-container__item.dragging-enabled > * {
+        @apply pointer-events-none z-30 cursor-move;
+    }
+
     .todo-container__item.dragging {
         @apply opacity-40;
     }
 
-    .todo-container__item.dragging * {
-        @apply pointer-events-none;
-    }
     .todo-container__item.over {
         @apply border-2 border-dashed;
     }

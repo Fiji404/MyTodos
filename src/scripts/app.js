@@ -1,14 +1,18 @@
 import datepicker from 'js-datepicker';
 import { createNotyficationElement } from './utils/notyficationPopUp';
+import { createPopper } from '@popperjs/core';
 
 class App {
     #addTodoForm;
     #addTodoBtn = document.getElementById('add-todo-btn');
     #todosContainer = document.getElementById('todo-container');
     #datepickerEl;
+    #todoElements;
+    #initialDraggedElement;
     constructor() {
         this.listenClickEventsInTodoContainer();
         window.addEventListener('DOMContentLoaded', this.getUserTodosFromLS.bind(this));
+        document.querySelector('#change-order-btn').addEventListener('click', this.enableTodosReOrder.bind(this));
     }
 
     listenClickEventsInTodoContainer() {
@@ -117,6 +121,73 @@ class App {
 
     appendTodosFromLS(todos) {
         todos.forEach(({ title, description, date, importance }) => new Todo(title, description, date, importance));
+        this.#todoElements = document.querySelectorAll('.todo-container__item');
+    }
+
+    enableTodosReOrder() {
+        if (document.body.dataset.disabled) return this.removeDragEventsOnTodos();
+        document.body.dataset.disabled = true;
+        this.setDragEventsOnTodos();
+    }
+
+    setDragEventsOnTodos() {
+        this.#todoElements.forEach(todo => {
+            todo.classList.add('dragging-enabled');
+            todo.setAttribute('draggable', 'true');
+        });
+        this.#todosContainer.addEventListener('dragstart', this.todoDragStart.bind(this));
+        this.#todosContainer.addEventListener('dragend', this.todoDragEnd.bind(this));
+        this.#todosContainer.addEventListener('dragleave', this.handleDragLeave.bind(this));
+        this.#todosContainer.addEventListener('dragover', this.handleDragOver.bind(this));
+        this.#todosContainer.addEventListener('dragenter', this.handleDragEnter.bind(this));
+        this.#todosContainer.addEventListener('drop', this.handleDrop.bind(this));
+    }
+
+    removeDragEventsOnTodos() {
+        this.#todoElements.forEach(todo => {
+            todo.classList.remove('dragging-enabled');
+            todo.removeAttribute('draggable');
+        });
+        this.#todosContainer.removeEventListener('dragstart', this.todoDragStart);
+        this.#todosContainer.removeEventListener('dragend', this.todoDragEnd);
+        this.#todosContainer.removeEventListener('dragleave', this.handleDragLeave);
+        this.#todosContainer.removeEventListener('dragover', this.handleDragOver);
+        this.#todosContainer.removeEventListener('dragenter', this.handleDragEnter);
+        this.#todosContainer.removeEventListener('drop', this.handleDrop);
+        document.body.removeAttribute('data-disabled')
+    }
+
+    todoDragStart(e) {
+        e.target.classList.add('dragging');
+        e.dataTransfer.clearData();
+        this.#initialDraggedElement = '';
+        this.#initialDraggedElement = e.target;
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/html', this.#initialDraggedElement.innerHTML);
+    }
+
+    todoDragEnd(e) {
+        e.target.classList.remove('dragging');
+    }
+
+    handleDragLeave(e) {
+        e.target.classList.remove('over');
+    }
+
+    handleDragOver(e) {
+        e.preventDefault();
+        return false;
+    }
+
+    handleDragEnter(e) {
+        if (e.target === this.#initialDraggedElement) return;
+        e.target.classList.add('over');
+    }
+
+    handleDrop(e) {
+        e.target.classList.remove('over');
+        this.#initialDraggedElement.innerHTML = e.target.innerHTML;
+        e.target.innerHTML = e.dataTransfer.getData('text/html');
     }
 }
 
@@ -124,18 +195,18 @@ class Navbar {
     #navbarEl = document.getElementById('navbar');
     #searchBar = document.getElementById('search-input');
     #searchTodoBtn = document.getElementById('search-btn');
+    #popperElement;
     constructor() {
         this.#navbarEl.addEventListener('click', this.listenClickEventsInNavbar.bind(this));
         this.#searchBar.addEventListener('input', this.listenInputEventsInSearchBar.bind(this));
+        this.#navbarEl.addEventListener('mouseover', this.listenOnHoverEventsInNavbar.bind(this));
+        this.#navbarEl.addEventListener('mouseout', this.listenOnMouseOutEventsInNavbar.bind(this));
         this.checkUserPreferences();
     }
 
     listenClickEventsInNavbar({ target }) {
         const navbarTargetElement =
-            target.closest('#search-btn') ||
-            target.closest('#button-app-options') ||
-            target.closest('#theme-btn') ||
-            target.closest('#change-order-btn');
+            target.closest('#search-btn') || target.closest('#button-app-options') || target.closest('#theme-btn');
         if (!navbarTargetElement) return;
         if (navbarTargetElement.matches('#search-btn')) {
             if (navbarTargetElement.nextElementSibling.value)
@@ -151,6 +222,41 @@ class Navbar {
 
     listenInputEventsInSearchBar({ target: { value } }) {
         this.#searchTodoBtn.classList.toggle('search--active', !!value);
+    }
+
+    listenOnHoverEventsInNavbar({ target }) {
+        const navTargetOptionElement = target.closest('#theme-btn') || target.closest('#change-order-btn');
+        if (!navTargetOptionElement) return;
+        this.#popperElement = this.createTooltipElement(navTargetOptionElement.dataset.optionName);
+        document.body.append(this.#popperElement);
+        createPopper(navTargetOptionElement, this.#popperElement, {
+            modifiers: [
+                {
+                    name: 'offset',
+                    options: {
+                        offset: [0, 20],
+                    },
+                },
+            ],
+        });
+    }
+
+    listenOnMouseOutEventsInNavbar({ target }) {
+        const targetMouseOut = target.closest('#theme-btn') || target.closest('#change-order-btn');
+        if (!targetMouseOut) return;
+        this.#popperElement.remove();
+    }
+
+    createTooltipElement(optName) {
+        const tooltip = document.createElement('div');
+        const arrow = document.createElement('div');
+        arrow.setAttribute('data-popper-arrow', '');
+        tooltip.classList.add('tooltip');
+        const tooltipHeading = document.createElement('h2');
+        tooltipHeading.textContent = optName;
+        tooltip.append(tooltipHeading);
+        tooltip.append(arrow);
+        return tooltip;
     }
 
     searchTodoItem(todoName) {
@@ -186,7 +292,6 @@ class Navbar {
         else {
             rootElement.classList.add('dark');
         }
-
         localStorage.setItem('Theme', document.documentElement.className);
     }
 }
@@ -200,22 +305,12 @@ class Todo {
         this.date = date || null;
         this.importance = importance || null;
         this.renderTodo(title, description, date, importance);
-        document.querySelector('#change-order-btn').addEventListener('click', this.enableTodosReOrder.bind(this));
     }
 
     renderTodo(title, description, date, importance) {
         const addTodoBtn = document.getElementById('add-todo-btn');
         const dateObject = new Date(date);
         const comparedFinishDateToCurrentDate = this.compareFinishDayToCurrentDay(dateObject.getDate());
-        console.log(importance);
-        const checkTodoImportance =
-            importance === 'less'
-                ? 'bg-grey-200'
-                : importance === 'more'
-                ? 'bg-neutral-300'
-                : importance === 'very'
-                ? 'bg-red-500'
-                : importance;
         const todoHTMLTemplate = `
             <section 
     class="bg-neutral-500 dark:bg-neutral-200 rounded-md overflow-hidden todo-container__item border border-neutral-300 pb-4 todo-container__item grow dark:border-neutral-400
@@ -249,61 +344,6 @@ class Todo {
 </section>
         `;
         addTodoBtn.insertAdjacentHTML('beforebegin', todoHTMLTemplate);
-        this.#todoElements = this.#todosContainer.querySelectorAll('.todo-container__item');
-    }
-
-    enableTodosReOrder() {
-        if (document.body.dataset.disabled) return document.body.removeAttribute('data-disabled');
-        document.body.dataset.disabled = true;
-        this.setDragEventsOnTodos();
-    }
-
-    setDragEventsOnTodos() {
-        if (!document.body.dataset.disabled) return;
-        this.#todoElements.forEach(todo => {
-            todo.classList.add('dragging-enabled');
-            todo.setAttribute('draggable', 'true');
-        });
-        this.#todosContainer.addEventListener('dragstart', this.todoDragStart.bind(this));
-        this.#todosContainer.addEventListener('dragend', this.handleDragEnd.bind(this));
-        //? todosContainer.addEventListener('dragover', this.handleDragOver);
-        this.#todosContainer.addEventListener('dragleave', this.handleDragLeave);
-        this.#todosContainer.addEventListener('dragenter', this.handleDragEnter);
-        this.#todosContainer.addEventListener('drop', this.handleDrop.bind(this));
-    }
-
-    todoDragStart(e) {
-        e.target.classList.add('dragging');
-        this.#initialDraggedElement = e.target;
-        e.dataTransfer.effectAllowed = 'move';
-        e.dataTransfer.setData('text/html', this.#initialDraggedElement.innerHTML);
-    }
-
-    todoDragEnd(e) {
-        e.target.classList.remove('dragging');
-        // this.#todoElements.forEach(todo => todo.classList.remove('over'));
-    }
-
-    // handleDragOver(e) {
-    //     e.preventDefault();
-    //     return false;
-    // }
-
-    handleDragLeave(e) {
-        e.target.classList.remove('over');
-    }
-
-    handleDragEnter(e) {
-        e.target.classList.add('over');
-    }
-
-    handleDrop(e) {
-        e.stopPropagation();
-        if (e.target.closest('todo-container__item') === this.#initialDraggedElement) return;
-
-        console.log(e);
-        this.#initialDraggedElement.innerHTML = e.target.closest('.todo-container__item').innerHTML;
-        e.target.closest('todo-container__item').innerHTML = e.dataTransfer.getData('text/html');
     }
 
     compareFinishDayToCurrentDay(day) {

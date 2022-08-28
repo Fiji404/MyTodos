@@ -42,7 +42,7 @@
                 class="center gap-6 bg-neutral-500 rounded-md p-4 py-3 border border-neutral-400 app-option--hidden transition-transform origin-right dark:border-neutral-300 dark:bg-neutral-100"
             >
                 <li>
-                    <button id="theme-btn" aria-label="Theme" class="center relative tooltip hover:tooltip--active z-0">
+                    <button id="theme-btn" data-option-name="Theme" class="center relative z-0">
                         <span class="sun-icon center"><i class="fa-solid fa-sun font-icon dark:text-black"></i></span>
                         <span class="moon-icon center"><i class="fa-solid fa-moon font-icon"></i></span>
                     </button>
@@ -50,8 +50,8 @@
                 <li>
                     <button
                         id="change-order-btn"
-                        aria-label="Change order"
-                        class="center relative hover:tooltip before:transition-opacity hover:before:opacity-100"
+                        data-option-name="Change order"
+                        class="center relative before:transition-opacity hover:before:opacity-100"
                     >
                         <i class="fa-solid fa-arrow-pointer font-icon dark:text-black"></i>
                     </button>
