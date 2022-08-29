@@ -52,11 +52,10 @@
     .tooltip > div,
     .tooltip > div::before {
         position: absolute;
-
         top: -2px;
         width: 8px;
         height: 8px;
-        background: inherit;
+        background-color: inherit;
     }
 
     .tooltip > div {
@@ -68,22 +67,6 @@
         content: '';
         transform: rotate(45deg);
     }
-
-    /* .tooltip[data-popper-placement^='top'] > #arrow {
-        bottom: -4px;
-    }
-
-    .tooltip[data-popper-placement^='bottom'] > #arrow {
-        top: -4px;
-    }
-
-    .tooltip[data-popper-placement^='left'] > #arrow {
-        right: -4px;
-    }
-
-    .tooltip[data-popper-placement^='right'] > #arrow {
-        left: -4px;
-    } */
 
     .option-style {
         @apply bg-neutral-700 text-white cursor-pointer;
@@ -118,12 +101,12 @@
     }
 
     .todo-container__item.selected {
-        animation: showUp 1s forwards;
+        animation: showUp 1s forwards infinite alternate;
     }
 
     @keyframes showUp {
         to {
-            @apply scale-110 shadow-lg;
+            @apply bg-orange-400;
         }
     }
 
@@ -188,6 +171,7 @@
         @apply content-[''] absolute bottom-0 left-0 w-full h-1 bg-orange-400;
         animation: shrinkToZero var(--timer-duration) 400ms linear forwards;
     }
+
     @keyframes showIn {
         to {
             @apply translate-y-4;

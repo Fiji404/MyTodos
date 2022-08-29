@@ -5,6 +5,14 @@
 - Light/dark theme mode
 - Implemented Drag and Drop API
 
+## Deployment
+
+To run this app locally, write in your terminal
+
+```bash
+  npm run dev-start
+```
+
 ## Demo
 
 Link -> [My Todos](https://mytodos.ink)

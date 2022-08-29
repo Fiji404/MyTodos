@@ -1,5 +1,9 @@
 export const createNotyficationElement = msg => {
-    if (document.querySelector('.notyfication-popup')) return;
+    const isNotyficationExist = document.querySelector('.notyfication-popup');
+    if (isNotyficationExist) {
+        isNotyficationExist.remove();
+        return createNotyficationElement(msg);
+    }
     const divElement = document.createElement('div');
     divElement.classList.add('notyfication-popup');
     divElement.classList.add('visible');
@@ -8,7 +12,6 @@ export const createNotyficationElement = msg => {
     divElement.append(notyficationHeadingElement);
     document.body.append(divElement);
     divElement.addEventListener('click', () => divElement.remove());
-    validateInputFields();
     removeNotyficationAfterTimerPassed(divElement.dataset.timer).catch(() => divElement.remove());
 };
 
@@ -19,9 +22,3 @@ const createHeadingMessageElement = msg => {
 };
 
 const removeNotyficationAfterTimerPassed = time => new Promise((_, reject) => setTimeout(reject, time * 1100));
-
-const validateInputFields = (...inputs) => {
-    inputs.forEach(input => {
-        if (!input.value) input.style.borderColor = 'red'
-    })
-}

@@ -1,20 +1,21 @@
 {
-  "name": "my-todos",
-  "version": "1.0.0",
-  "description": "",
-  "scripts": {
-    "dev": "parcel src/pages/index.html",
-    "build": "parcel build src/pages/index.html",
-    "tailwind-watch": "tailwind -i ./src/css/index.css -o ./src/css/app.css --watch --minify",
-    "tailwind-build": "tailwind build ./src/css/index.css -o ./src/css/app.css && parcel build ./src/pages/index.html"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@popperjs/core": "^2.11.6",
-    "js-datepicker": "^5.18.0",
-    "parcel": "^2.7.0",
-    "tailwindcss": "^3.1.8"
-  }
+    "name": "my-todos",
+    "version": "1.0.0",
+    "scripts": {
+        "dev": "parcel src/pages/index.html",
+        "build": "parcel build src/pages/index.html",
+        "tailwind-watch": "tailwind -i ./src/css/index.css -o ./src/css/app.css --watch --minify",
+        "tailwind-build": "tailwind build ./src/css/index.css -o ./src/css/app.css && parcel build ./src/pages/index.html",
+        "dev-start": "npm run dev & npm run tailwind-watch",
+        "build-start": "npm run build & npm run tailwind-build"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "@popperjs/core": "^2.11.6",
+        "js-datepicker": "^5.18.0",
+        "parcel": "^2.7.0",
+        "tailwindcss": "^3.1.8"
+    }
 }

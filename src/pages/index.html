@@ -7,10 +7,10 @@
         <meta name="description" content="App for managing your tasks." />
         <meta name="keywords" content="tasks, todo, list, manage, app" />
         <link rel="stylesheet" href="../css/app.css" />
-        <link rel="icon" href="../assets/icons/app-icon.png" />
+        <link rel="icon" href="../assets/images/app-logo.png" />
         <script src="https://kit.fontawesome.com/753d009a2f.js" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://unpkg.com/js-datepicker/dist/datepicker.min.css" />
-        <script defer type="module" src="../scripts/app.js"></script>
+        <script defer type="module" src="../scripts/index.js"></script>
         <title>Todo app</title>
     </head>
     <body class="min-h-screen bg-neutral-800 py-3 px-4 flex flex-col gap-4 dark:bg-neutral-50 transition-colors">
@@ -19,9 +19,8 @@
             class="bg-neutral-600 flex gap-6 py-4 px-3 rounded-md border border-neutral-500 border-solid dark:bg-neutral-100 transition-colors"
         >
             <header>
-                <h1 class="font-medium text-neutral-100 text-lg leading-6 select-none dark:text-black">
-                    My <br />
-                    Todos
+                <h1 class="font-medium text-neutral-100 text-lg leading-6 select-none dark:text-black w-min">
+                    My Todos
                 </h1>
             </header>
             <div class="grow flex relative overflow-hidden">
@@ -69,12 +68,11 @@
         >
             <button
                 id="add-todo-btn"
-                class="w-64 bg-neutral-400 rounded-md py-10 text-2xl font-medium border-2 border-neutral-300 dark:border-neutral-300 hover:bg-neutral-300 dark:bg-neutral-100 dark:hover:bg-neutral-200 max-h-48 transition-colors"
+                class="w-64 bg-neutral-800 text-neutral-50 rounded-md py-10 text-2xl font-medium border-2 border-neutral-600 hover:bg-neutral-500 dark:border-neutral-300 dark:bg-neutral-100 dark:hover:bg-neutral-200 dark:text-neutral-900 max-h-48 transition-colors"
             >
                 Add <br />
                 todo
             </button>
-            <!-- <h2 class="text-neutral-300 text-3xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">You have no todos yet.</h2> -->
         </main>
     </body>
 </html>
