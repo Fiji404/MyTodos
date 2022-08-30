@@ -4,12 +4,12 @@ export class Todo {
         this.description = description;
         this.date = date || null;
         this.importance = importance || null;
-        this.#renderTodo(title, description, date, importance);
+        // this.#renderTodo(title, description, date, importance);
     }
 
-    #renderTodo(title, description, date, importance) {
+    renderTodo(title, description, date, importance) {
         const addTodoBtn = document.getElementById('add-todo-btn');
-        const ISOStringToDateObject = new Date(date);
+        const ISOStringToDateObject = new Date(this.date);
         const transformedDateToUserFriendlyFormat = this.#transformDateToUserFriendlyFormat(
             ISOStringToDateObject.getDate()
         );
@@ -19,12 +19,12 @@ export class Todo {
      transition-colors"
 >
     <header class="py-3 border-b border-b-neutral-400 bg-neutral-600 dark:bg-neutral-300 transition-colors">
-        <h2 class="text-3xl text-center font-semibold text-neutral-100 dark:text-neutral-900 transition-colors">${title}</h2>
+        <h2 class="text-3xl text-center font-semibold text-neutral-100 dark:text-neutral-900 transition-colors">${this.title}</h2>
     </header>
     <div class="px-2">
-        <p class="mt-4 text-neutral-50 font-medium text-xl dark:text-neutral-900 transition-colors">${description}</p>
+        <p class="mt-4 text-neutral-50 font-medium text-xl dark:text-neutral-900 transition-colors">${this.description}</p>
         ${
-            !date
+            !this.date
                 ? ''
                 : `<div class="mt-8 ml-auto w-fit">
             <p class="inline text-neutral-100 dark:text-neutral-900 transition-colors">Ends</p>

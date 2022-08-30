@@ -14,6 +14,9 @@ export class App {
         this.#listenClickEventsInTodoContainer();
         this.#reOrderTodosBtn.addEventListener('click', this.#enableTodosReOrder.bind(this));
         window.addEventListener('DOMContentLoaded', this.#renderUserTodosFromLS.bind(this));
+        [this.#handleTodoDragStart, this.#handleTodoDragEnter, this.#handleTodoDrop].forEach(
+            func => (func.bound = func.bind(this))
+        );
     }
 
     #listenClickEventsInTodoContainer() {
@@ -26,7 +29,7 @@ export class App {
 
     #showTodoForm() {
         this.#addNewTodoBtn.setAttribute('disabled', '');
-        const {formElement, datapickerInstance} = createTodoFormElement();
+        const { formElement, datapickerInstance } = createTodoFormElement();
         this.#createNewTodoFormEl = formElement;
         this.#datepickerEl = datapickerInstance;
         formElement.addEventListener('submit', this.#appendNewCreatedTodo.bind(this));
@@ -48,7 +51,7 @@ export class App {
             return createNotyficationElement('Check provided data !');
 
         const removeNotyficationPopUp = document.querySelector('.notyfication-popup').remove();
-        const todo = new Todo(todoTitle.value, todoDesc.value, finishTodoDate, todoPriority);
+        const todo = new Todo(todoTitle.value, todoDesc.value, finishTodoDate, todoPriority).renderTodo();
         const userTodosFromLS = this.#getUserTodosFromLS() || [];
         userTodosFromLS.push(todo);
         localStorage.setItem('todos', JSON.stringify(userTodosFromLS));
@@ -68,23 +71,58 @@ export class App {
     }
 
     #getUserTodosFromLS() {
-        const checkUserTodosInLs = JSON.parse(localStorage.getItem('todos'));
-        if (!checkUserTodosInLs) return false;
-        return checkUserTodosInLs;
+        const getUserTodosFromLS = JSON.parse(localStorage.getItem('todos'));
+        if (!getUserTodosFromLS) return;
+        return getUserTodosFromLS;
     }
 
     #renderUserTodosFromLS() {
         const userTodosInLS = this.#getUserTodosFromLS();
         if (!userTodosInLS) return;
-        userTodosInLS.forEach(
-            ({ title, description, date, importance }) => new Todo(title, description, date, importance)
+        userTodosInLS.forEach(({ title, description, date, importance }) =>
+            new Todo(title, description, date, importance).renderTodo()
         );
         this.#todoElements = [...document.querySelectorAll('.todo-container__item')];
     }
 
     #enableTodosReOrder() {
-        if (document.body.dataset.disabled) return this.#removeDragEventsOnTodos();
+        if (document.body.dataset.disabled) {
+            this.#removeDragEventsOnTodos();
+            this.#saveTodosOrderToLS();
+            this.#createSuccessMessage();
+            return;
+        }
         this.#setDragEventsOnTodos();
+    }
+
+    #saveTodosOrderToLS() {
+        const newTodosOrder = this.#todoElements.map(todo => {
+            const todoTitle = todo.querySelector('h2').textContent;
+            const todoDesc = todo.querySelector('p').textContent;
+            const todoFinishDate = this.#getTodoDateByTitle(todoTitle);
+            return new Todo(todoTitle, todoDesc, todoFinishDate);
+        });
+        localStorage.setItem('todos', JSON.stringify(newTodosOrder));
+    }
+
+    #createSuccessMessage() {
+        const successMessageHTMLTemplate = `
+        <div id="success-message" class="success-message">
+            <h2 class="text-2xl text-neutral-50 dark:text-black font-semibold">Saved <span><i class="fa-solid fa-circle-check text-green-400 ml-1"></i></span></h2>
+        </div>`;
+        document.body.insertAdjacentHTML('afterbegin', successMessageHTMLTemplate);
+        const successMessageEl = document.getElementById('success-message');
+        successMessageEl.classList.add('visible');
+        setTimeout(() => {
+            successMessageEl.remove();
+        }, 2500);
+    }
+
+    #getTodoDateByTitle(todoTitle) {
+        const userTodosInLS = this.#getUserTodosFromLS();
+        if (!userTodosInLS) return;
+        const todoFinishDate = userTodosInLS.find(todo => todoTitle === todo.title).date;
+        return todoFinishDate;
     }
 
     #setDragEventsOnTodos() {
@@ -93,31 +131,30 @@ export class App {
             todo.classList.add('dragging-enabled');
             todo.setAttribute('draggable', 'true');
         });
-        this.#todosContainerEl.addEventListener('dragstart', this.#handleTodoDragStart.bind(this));
-        this.#todosContainerEl.addEventListener('dragend', this.#handleTodoDragEnd.bind(this));
-        this.#todosContainerEl.addEventListener('dragleave', this.#handleTodoDragLeave.bind(this));
-        this.#todosContainerEl.addEventListener('dragover', this.#handleTodoDragOver.bind(this));
-        this.#todosContainerEl.addEventListener('dragenter', this.#handleTodoDragEnter.bind(this));
-        this.#todosContainerEl.addEventListener('drop', this.#handleTodoDrop.bind(this));
+        this.#todosContainerEl.addEventListener('dragstart', this.#handleTodoDragStart.bound);
+        this.#todosContainerEl.addEventListener('dragend', this.#handleTodoDragEnd);
+        this.#todosContainerEl.addEventListener('dragleave', this.#handleTodoDragLeave);
+        this.#todosContainerEl.addEventListener('dragover', this.#handleTodoDragOver);
+        this.#todosContainerEl.addEventListener('dragenter', this.#handleTodoDragEnter.bound);
+        this.#todosContainerEl.addEventListener('drop', this.#handleTodoDrop.bound);
     }
 
     #removeDragEventsOnTodos() {
+        document.body.removeAttribute('data-disabled');
         this.#todoElements.forEach(todo => {
             todo.classList.remove('dragging-enabled');
             todo.removeAttribute('draggable');
         });
-        this.#todosContainerEl.removeEventListener('dragstart', this.#handleTodoDragStart);
+        this.#todosContainerEl.removeEventListener('dragstart', this.#handleTodoDragStart.bound);
         this.#todosContainerEl.removeEventListener('dragend', this.#handleTodoDragEnd);
         this.#todosContainerEl.removeEventListener('dragleave', this.#handleTodoDragLeave);
         this.#todosContainerEl.removeEventListener('dragover', this.#handleTodoDragOver);
-        this.#todosContainerEl.removeEventListener('dragenter', this.#handleTodoDragEnter);
-        this.#todosContainerEl.removeEventListener('drop', this.#handleTodoDrop);
-        document.body.removeAttribute('data-disabled');
+        this.#todosContainerEl.removeEventListener('dragenter', this.#handleTodoDragEnter.bound);
+        this.#todosContainerEl.removeEventListener('drop', this.#handleTodoDrop.bound);
     }
 
     #handleTodoDragStart(e) {
         e.target.classList.add('dragging');
-        e.dataTransfer.clearData();
         this.#initialDraggedElement = e.target;
         e.dataTransfer.effectAllowed = 'move';
         e.dataTransfer.setData('text/html', this.#initialDraggedElement.innerHTML);

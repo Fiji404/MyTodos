@@ -172,6 +172,21 @@
         animation: shrinkToZero var(--timer-duration) 400ms linear forwards;
     }
 
+    .success-message {
+        @apply fixed left-1/2 top-4 z-10 dark:bg-neutral-100 bg-neutral-700 py-1 px-2 shadow-md border dark:border-neutral-300 border-neutral-500 rounded-md select-none transition-all;
+        transform: translate(-50%, -150%);
+    }
+
+    .success-message.visible {
+        animation: slideIn 200ms 500ms ease forwards;
+    }
+
+    @keyframes slideIn {
+        to {
+            transform: translate(-50%, 20%);
+        }
+    }
+
     @keyframes showIn {
         to {
             @apply translate-y-4;

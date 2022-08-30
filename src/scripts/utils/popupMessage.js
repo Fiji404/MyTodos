@@ -1,7 +1,7 @@
 export const createNotyficationElement = msg => {
-    const isNotyficationExist = document.querySelector('.notyfication-popup');
-    if (isNotyficationExist) {
-        isNotyficationExist.remove();
+    const notyficationElement = document.querySelector('.notyfication-popup');
+    if (notyficationElement) {
+        notyficationElement.remove();
         return createNotyficationElement(msg);
     }
     const divElement = document.createElement('div');
@@ -12,7 +12,7 @@ export const createNotyficationElement = msg => {
     divElement.append(notyficationHeadingElement);
     document.body.append(divElement);
     divElement.addEventListener('click', () => divElement.remove());
-    removeNotyficationAfterTimerPassed(divElement.dataset.timer).catch(() => divElement.remove());
+    removeNotyficationAfterDelay(divElement.dataset.timer).catch(() => divElement.remove());
 };
 
 const createHeadingMessageElement = msg => {
@@ -21,4 +21,4 @@ const createHeadingMessageElement = msg => {
     return headingElement;
 };
 
-const removeNotyficationAfterTimerPassed = time => new Promise((_, reject) => setTimeout(reject, time * 1100));
+const removeNotyficationAfterDelay = time => new Promise((_, reject) => setTimeout(reject, time * 1100));
