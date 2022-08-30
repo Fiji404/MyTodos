@@ -24,7 +24,23 @@ export class App {
             if (target === currentTarget) return;
             if (target === this.#addNewTodoBtn) this.#showTodoForm();
             if (target.closest('#cancel-add-todo-btn')) this.#cancelFromAddingNewTodo();
+            // if (target.closest('#complete-todo-btn')) this.#markTodoAsCompleted();
+            if (target.closest('#remove-todo-btn')) this.#removeTodoFromUI(target.closest('#remove-todo-btn'));
         });
+    }
+
+    #removeTodoFromUI(removeTodoBtn) {
+        const parentElementOfClickedBtn = removeTodoBtn.parentElement;
+        const parentElementTitle = parentElementOfClickedBtn.querySelector('h2').textContent;
+        this.#removeTodoFromLS(parentElementTitle);
+        parentElementOfClickedBtn.remove();
+    }
+
+    #removeTodoFromLS(todoTitle) {
+        const userTodosInLS = this.#getUserTodosFromLS();
+        const getIndexTodoByTitle = userTodosInLS.findIndex(todo => todo.title === todoTitle);
+        userTodosInLS.splice(getIndexTodoByTitle, 1);
+        localStorage.setItem('todos', JSON.stringify(userTodosInLS));
     }
 
     #showTodoForm() {

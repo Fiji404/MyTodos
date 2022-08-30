@@ -5,13 +5,17 @@ export class Navbar {
     #navbarEl = document.getElementById('navbar');
     #searchInputEl = document.getElementById('search-input');
     #searchTodoBtn = document.getElementById('search-btn');
-    #todosContainer = document.getElementById('todo-container')
+    #todosContainer = document.getElementById('todo-container');
     #tooltipElement;
     constructor() {
         this.#navbarEl.addEventListener('click', this.#listenClickEvents.bind(this));
         this.#searchInputEl.addEventListener('input', this.#listenInputEvents.bind(this));
-        [this.#navbarEl, this.#todosContainer].forEach(el => el.addEventListener('mouseover', this.#listenHoverEvents.bind(this)));
-        [this.#navbarEl, this.#todosContainer].forEach(el => el.addEventListener('mouseout', this.#listenMouseOutEvents.bind(this)));
+        [this.#navbarEl, this.#todosContainer].forEach(el =>
+            el.addEventListener('mouseover', this.#listenHoverEvents.bind(this))
+        );
+        [this.#navbarEl, this.#todosContainer].forEach(el =>
+            el.addEventListener('mouseout', this.#listenMouseOutEvents.bind(this))
+        );
         this.#checkUserThemePreference();
     }
 
@@ -36,7 +40,12 @@ export class Navbar {
     }
 
     #listenHoverEvents({ target }) {
-        const targetOptionElement = target.closest('#theme-btn') || target.closest('#change-order-btn') || target.closest('#cancel-add-todo-btn');
+        const targetOptionElement =
+            target.closest('#theme-btn') ||
+            target.closest('#change-order-btn') ||
+            target.closest('#cancel-add-todo-btn') ||
+            target.closest('#complete-todo-btn') ||
+            target.closest('#remove-todo-btn');
         if (!targetOptionElement) return;
         this.#tooltipElement = createTooltipElement(targetOptionElement.dataset.optionName);
         createPopper(targetOptionElement, this.#tooltipElement, {
@@ -52,7 +61,12 @@ export class Navbar {
     }
 
     #listenMouseOutEvents({ target }) {
-        const targetMouseOut = target.closest('#theme-btn') || target.closest('#change-order-btn') || target.closest('#cancel-add-todo-btn');
+        const targetMouseOut =
+            target.closest('#theme-btn') ||
+            target.closest('#change-order-btn') ||
+            target.closest('#cancel-add-todo-btn') ||
+            target.closest('#complete-todo-btn') ||
+            target.closest('#remove-todo-btn');
         if (!targetMouseOut) return;
         this.#tooltipElement.remove();
     }

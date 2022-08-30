@@ -100,6 +100,10 @@
         max-width: 400px;
     }
 
+    .todo-container__item.todo-options--active > button {
+        @apply opacity-100 pointer-events-auto;
+    }
+
     .todo-container__item.selected {
         animation: showUp 1s forwards infinite alternate;
     }
