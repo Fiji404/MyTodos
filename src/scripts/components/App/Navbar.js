@@ -1,4 +1,4 @@
-import { createPopper } from '@popperjs/core';
+import { createPopper, popper } from '@popperjs/core';
 import { createTooltipElement } from '../../utils/tooltip';
 
 export class Navbar {
@@ -8,7 +8,9 @@ export class Navbar {
     #todosContainer = document.getElementById('todo-container');
     #tooltipElement;
     constructor() {
-        this.#navbarEl.addEventListener('click', this.#listenClickEvents.bind(this));
+        [this.#navbarEl, this.#todosContainer].forEach(el =>
+            el.addEventListener('click', this.#listenClickEvents.bind(this))
+        );
         this.#searchInputEl.addEventListener('input', this.#listenInputEvents.bind(this));
         [this.#navbarEl, this.#todosContainer].forEach(el =>
             el.addEventListener('mouseover', this.#listenHoverEvents.bind(this))
@@ -21,7 +23,11 @@ export class Navbar {
 
     #listenClickEvents({ target }) {
         const navbarTargetElement =
-            target.closest('#search-btn') || target.closest('#button-app-options') || target.closest('#theme-btn');
+            target.closest('#search-btn') ||
+            target.closest('#button-app-options') ||
+            target.closest('#theme-btn') ||
+            target.closest('#remove-todo-btn') ||
+            target.closest('#complete-todo-btn');
         if (!navbarTargetElement) return;
         if (navbarTargetElement.matches('#search-btn')) {
             if (navbarTargetElement.nextElementSibling.value)
@@ -33,6 +39,8 @@ export class Navbar {
             navbarTargetElement.previousElementSibling.classList.toggle('app-option--hidden');
         }
         if (navbarTargetElement.matches('#theme-btn')) this.#toggleUserTheme(navbarTargetElement);
+        if (navbarTargetElement.matches('#remove-todo-btn') || navbarTargetElement.matches('#complete-todo-btn'))
+            this.#deleteTooltip();
     }
 
     #listenInputEvents({ target: { value } }) {
@@ -68,6 +76,10 @@ export class Navbar {
             target.closest('#complete-todo-btn') ||
             target.closest('#remove-todo-btn');
         if (!targetMouseOut) return;
+        this.#deleteTooltip();
+    }
+
+    #deleteTooltip() {
         this.#tooltipElement.remove();
     }
 

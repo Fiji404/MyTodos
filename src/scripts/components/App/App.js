@@ -8,6 +8,7 @@ export class App {
     #reOrderTodosBtn = document.querySelector('#change-order-btn');
     #createNewTodoFormEl;
     #datepickerEl;
+    #initialTodosOrder;
     #todoElements;
     #initialDraggedElement;
     constructor() {
@@ -66,8 +67,12 @@ export class App {
         if (!this.#checkProvidedDataForNewTodo(todoTitle, todoDesc))
             return createNotyficationElement('Check provided data !');
 
-        const removeNotyficationPopUp = document.querySelector('.notyfication-popup').remove();
-        const todo = new Todo(todoTitle.value, todoDesc.value, finishTodoDate, todoPriority).renderTodo();
+        const notyficationEl = document.querySelector('.notyfication-popup');
+        if (notyficationEl) notyficationEl.remove();
+        const todo = new Todo(todoTitle.value, todoDesc.value, finishTodoDate, todoPriority);
+        todo.renderTodo();
+        this.#todoElements = [...document.querySelectorAll('.todo-container__item')]
+        this.#initialTodosOrder = [...document.querySelectorAll('.todo-container__item')];
         const userTodosFromLS = this.#getUserTodosFromLS() || [];
         userTodosFromLS.push(todo);
         localStorage.setItem('todos', JSON.stringify(userTodosFromLS));

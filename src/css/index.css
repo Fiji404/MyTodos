@@ -47,7 +47,7 @@
 
     .tooltip {
         @apply bg-neutral-700 text-neutral-50 px-2 rounded-md border border-neutral-900 font-semibold dark:bg-neutral-50 dark:border-neutral-300 dark:text-black opacity-0 z-20;
-        animation: originate 500ms ease forwards;
+        animation: originateIn 500ms ease forwards;
     }
     .tooltip > div,
     .tooltip > div::before {
@@ -103,27 +103,12 @@
     .todo-container__item.todo-options--active > button {
         @apply opacity-100 pointer-events-auto;
     }
+    body[data-disabled] .todo-container__item.todo-options--active > button {
+        @apply opacity-0 pointer-events-none;
+    }
 
     .todo-container__item.selected {
         animation: showUp 1s forwards infinite alternate;
-    }
-
-    @keyframes showUp {
-        to {
-            @apply bg-orange-400;
-        }
-    }
-
-    @keyframes originate {
-        to {
-            @apply opacity-100;
-        }
-    }
-
-    @keyframes hideIn {
-        to {
-            @apply opacity-0;
-        }
     }
 
     .todo-container__item h2::selection {
@@ -199,6 +184,24 @@
     @keyframes shrinkToZero {
         to {
             @apply w-0;
+        }
+    }
+
+    @keyframes showUp {
+        to {
+            @apply bg-orange-400;
+        }
+    }
+
+    @keyframes originateIn {
+        to {
+            @apply opacity-100;
+        }
+    }
+
+    @keyframes hideIn {
+        to {
+            @apply opacity-0;
         }
     }
 }
