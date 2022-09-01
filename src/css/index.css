@@ -100,9 +100,33 @@
         max-width: 400px;
     }
 
-    .todo-container__item.todo-options--active > button {
+    .todo-container__item.completed:hover::before {
+        content: '';
+        background-color: rgba(49, 49, 49, .4);
+    }
+
+    .todo-container__item.completed::before {
+        content: 'Completed';
+        position: absolute;
+        font-size: 2rem;
+        font-weight: 600;
+        display: grid;
+        place-items: center;
+        background-color: rgba(49, 49, 49, .9);
+        border-radius: 0.375rem;
+        color: #fff;
+        inset: 0;
+        transition: background-color 300ms ease
+    }
+
+    .todo-container__item.originateTodo {
+        animation: originateTodo 500ms ease forwards;
+    }
+
+    .todo-container__item.todo-options--active button:not(.completed > button:first-child) {
         @apply opacity-100 pointer-events-auto;
     }
+
     body[data-disabled] .todo-container__item.todo-options--active > button {
         @apply opacity-0 pointer-events-none;
     }
@@ -190,6 +214,12 @@
     @keyframes showUp {
         to {
             @apply bg-orange-400;
+        }
+    }
+
+    @keyframes originateTodo {
+        to {
+            @apply opacity-100 scale-100 shadow-xl;
         }
     }
 

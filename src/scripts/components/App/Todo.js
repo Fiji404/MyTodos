@@ -1,32 +1,54 @@
-import { v4 as uuidv4 } from 'uuid'
+// import { v4 as uuidv4 } from 'uuid';
 
 export class Todo {
-    constructor(title, description, date, importance) {
+    constructor(title, description, date, id, isFinished) {
         this.title = title;
         this.description = description;
         this.date = date || null;
-        this.importance = importance || null;
+        this.id = id;
+        this.isFinished = isFinished || false;
     }
 
     renderTodo() {
         const addTodoBtn = document.getElementById('add-todo-btn');
+        if (this.isFinished) return this;
+        const todoHTMLTemplate = this.#createTodoTemplate();
+        addTodoBtn.insertAdjacentHTML('beforebegin', todoHTMLTemplate);
+        const newAddedTodo = [...document.querySelectorAll('.todo-container__item')].find(todo => todo.id === this.id);
+        newAddedTodo.classList.add('originateTodo');
+    }
+
+    renderFinishedTodo() {
+        const addTodoBtn = document.getElementById('add-todo-btn');
+        const todoHTMLTemplate = this.#createTodoTemplate();
+        addTodoBtn.insertAdjacentHTML('beforebegin', todoHTMLTemplate);
+        const newAddedTodo = [...document.querySelectorAll('.todo-container__item')].find(todo => todo.id === this.id);
+        newAddedTodo.classList.add('originateTodo');
+    }
+
+    #createTodoTemplate() {
         const ISOStringToDateObject = new Date(this.date);
         const transformedDateToUserFriendlyFormat = this.#transformDateToUserFriendlyFormat(
             ISOStringToDateObject.getDate()
         );
-        const todoID = uuidv4();
         const todoHTMLTemplate = `
-            <section id="${todoID}"
+            <section id="${this.id}"
     class="bg-neutral-500 dark:bg-neutral-200 rounded-md todo-container__item border border-neutral-400 pb-4 todo-container__item grow dark:border-neutral-400
-     transition-colors relative hover:todo-options--active scale-105 shadow-xl max-h-52"
+     transition-colors relative hover:todo-options--active shadow-2xl opacity-0 scale-110 ${
+         this.isFinished ? 'completed' : ''
+     }"
 >
 <button id="complete-todo-btn" data-option-name="Mark todo as completed" aria-label="Mark todo as completed" class="absolute top-0 -right-2 -translate-y-1/2 hover:bg-green-800 block h-5 rounded-full transition-all pointer-events-none opacity-0"><i class="fa-regular fa-circle-check text-xl text-green-500"></i></button>
 <button id="remove-todo-btn" data-option-name="Remove todo" aria-label="Remove todo" class="h-5 absolute top-0 -translate-y-1/2 -left-2 hover:bg-red-800 rounded-full transition-all pointer-events-none opacity-0"><i class="fa-regular fa-circle-xmark text-xl text-red-600"></i></button>
-    <header class="py-3 border-b border-b-neutral-400 bg-neutral-600 dark:bg-neutral-300 transition-colors rounded-md rounded-br-none rounded-bl-none">
-        <h2 class="text-3xl text-center font-semibold text-neutral-100 dark:text-neutral-900 transition-colors">${this.title}</h2>
+    <header class="py-3 px-1 border-b border-b-neutral-400 bg-neutral-600 dark:bg-neutral-300 transition-colors rounded-md rounded-br-none rounded-bl-none">
+        <h2 class="text-2xl text-center font-semibold text-neutral-100 dark:text-neutral-900 transition-colors">${
+            this.title
+        }</h2>
     </header>
     <div class="px-2">
-        <p class="mt-4 text-neutral-50 font-medium text-xl dark:text-neutral-900 transition-colors">${this.description}</p>
+        <p class="mt-4 text-neutral-50 font-medium text-xl dark:text-neutral-900 transition-colors break-all">${
+            this.description
+        }</p>
         ${
             !this.date
                 ? ''
@@ -49,9 +71,7 @@ export class Todo {
     </div>
 </section>
         `;
-        addTodoBtn.insertAdjacentHTML('beforebegin', todoHTMLTemplate);
-        const newAddedTodo = [...document.querySelectorAll('.todo-container__item')].find(todo => todo.id === todoID);
-        newAddedTodo.classList.add('animate-originate')
+        return todoHTMLTemplate;
     }
 
     #transformDateToUserFriendlyFormat(day) {

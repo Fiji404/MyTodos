@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import { Todo } from './Todo';
 import { createNotyficationElement } from '../../utils/popupMessage';
 import { createTodoFormElement } from '../../utils/todoForm';
@@ -25,7 +26,7 @@ export class App {
             if (target === currentTarget) return;
             if (target === this.#addNewTodoBtn) this.#showTodoForm();
             if (target.closest('#cancel-add-todo-btn')) this.#cancelFromAddingNewTodo();
-            // if (target.closest('#complete-todo-btn')) this.#markTodoAsCompleted();
+            if (target.closest('#complete-todo-btn')) this.#markTodoAsCompleted(target);
             if (target.closest('#remove-todo-btn')) this.#removeTodoFromUI(target.closest('#remove-todo-btn'));
         });
     }
@@ -35,6 +36,18 @@ export class App {
         const parentElementTitle = parentElementOfClickedBtn.querySelector('h2').textContent;
         this.#removeTodoFromLS(parentElementTitle);
         parentElementOfClickedBtn.remove();
+    }
+
+    #markTodoAsCompleted(target) {
+        const todoElement = target.closest('.todo-container__item');
+        const todoElementClone = todoElement.cloneNode(true);
+        todoElement.remove();
+        this.#addNewTodoBtn.before(todoElementClone);
+        const todosInLS = this.#getUserTodosFromLS();
+        const completedTodoInLS = todosInLS.find(todo => todo.id === todoElementClone.id);
+        completedTodoInLS.isFinished = true;
+        localStorage.setItem('todos', JSON.stringify(todosInLS));
+        todoElementClone.classList.add('completed');
     }
 
     #removeTodoFromLS(todoTitle) {
@@ -63,15 +76,15 @@ export class App {
         const todoTitle = document.getElementById('title');
         const todoDesc = document.getElementById('description');
         const finishTodoDate = this.#datepickerEl.dateSelected?.toISOString();
-        const todoPriority = document.getElementById('todo-importance').value;
+        const todoID = uuidv4();
         if (!this.#checkProvidedDataForNewTodo(todoTitle, todoDesc))
             return createNotyficationElement('Check provided data !');
 
         const notyficationEl = document.querySelector('.notyfication-popup');
         if (notyficationEl) notyficationEl.remove();
-        const todo = new Todo(todoTitle.value, todoDesc.value, finishTodoDate, todoPriority);
+        const todo = new Todo(todoTitle.value, todoDesc.value, finishTodoDate, todoID);
         todo.renderTodo();
-        this.#todoElements = [...document.querySelectorAll('.todo-container__item')]
+        this.#todoElements = [...document.querySelectorAll('.todo-container__item')];
         this.#initialTodosOrder = [...document.querySelectorAll('.todo-container__item')];
         const userTodosFromLS = this.#getUserTodosFromLS() || [];
         userTodosFromLS.push(todo);
@@ -98,11 +111,17 @@ export class App {
     }
 
     #renderUserTodosFromLS() {
+        const finishedTodos = [];
         const userTodosInLS = this.#getUserTodosFromLS();
         if (!userTodosInLS) return;
-        userTodosInLS.forEach(({ title, description, date, importance }) =>
-            new Todo(title, description, date, importance).renderTodo()
-        );
+        userTodosInLS.forEach(({ title, description, date, id, isFinished }) => {
+            const todo = new Todo(title, description, date, id, isFinished);
+            if (todo.renderTodo()) finishedTodos.push(todo);
+        });
+        if (finishedTodos.length !== 0)
+            finishedTodos.forEach(
+                ({ title, description, date, id, isFinished }) => new Todo(title, description, date, id, isFinished).renderFinishedTodo()
+            );
         this.#todoElements = [...document.querySelectorAll('.todo-container__item')];
     }
 
@@ -121,7 +140,8 @@ export class App {
             const todoTitle = todo.querySelector('h2').textContent;
             const todoDesc = todo.querySelector('p').textContent;
             const todoFinishDate = this.#getTodoDateByTitle(todoTitle);
-            return new Todo(todoTitle, todoDesc, todoFinishDate);
+            const todoID = todo.id;
+            return new Todo(todoTitle, todoDesc, todoFinishDate, todoID);
         });
         localStorage.setItem('todos', JSON.stringify(newTodosOrder));
     }

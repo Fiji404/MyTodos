@@ -39,15 +39,6 @@ export const createTodoFormElement = () => {
                     <label class="label-style dark:text-neutral-900" for="finish-date">Finish date (optional)</label>
                     <input id="finish-date" class="p-1 rounded-sm" />
                 </div>
-                <div class="flex flex-col gap-1">
-                    <label class="label-style dark:text-neutral-900" for="todo-importance">Importance (optional)</label>
-                    <select class="rounded-sm focus:outline-neutral-800 focus:outline-offset-2" id="todo-importance">
-                        <option value="null" class="option-style">Choose one below or left blank</option>
-                        <option value="less" class="option-style">less important</option>
-                        <option value="more" class="option-style">more important</option>
-                        <option value="very" class="option-style">very important</option>
-                    </select>
-                </div>
                 <button
                     id="submit-todo-btn"
                     class="w-fit mx-auto mt-3 border border-green-500 px-4 py-1 rounded-md text-green-500 bg-neutral-600 flex gap-2 items-center hover:-translate-y-1 transition-transform"
