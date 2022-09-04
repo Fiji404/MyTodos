@@ -4,8 +4,8 @@ import { createNotyficationElement } from '../../utils/popupMessage';
 import { createTodoFormElement } from '../../utils/todoForm';
 
 export class App {
-    #addNewTodoBtn = document.getElementById('add-todo-btn');
-    #todosContainerEl = document.getElementById('todo-container');
+    #addNewTodoBtn = document.querySelector('.add-todo-btn');
+    #todosContainerEl = document.querySelector('.todo-container');
     #reOrderTodosBtn = document.querySelector('#change-order-btn');
     #createNewTodoFormEl;
     #datepickerEl;
@@ -59,16 +59,16 @@ export class App {
 
     #showTodoForm() {
         this.#addNewTodoBtn.setAttribute('disabled', '');
-        const { formElement, datapickerInstance } = createTodoFormElement();
+        const { formElement, datePickerInstance } = createTodoFormElement();
         this.#createNewTodoFormEl = formElement;
-        this.#datepickerEl = datapickerInstance;
+        this.#datepickerEl = datePickerInstance;
         formElement.addEventListener('submit', this.#appendNewCreatedTodo.bind(this));
     }
 
     #cancelFromAddingNewTodo() {
         this.#createNewTodoFormEl.remove();
         this.#addNewTodoBtn.removeAttribute('disabled');
-        document.querySelector('.tooltip').remove();
+        document.querySelector('.tooltip-message').remove();
     }
 
     #appendNewCreatedTodo(e) {

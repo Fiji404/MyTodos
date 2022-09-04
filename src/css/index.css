@@ -3,120 +3,91 @@
 @tailwind utilities;
 
 @layer components {
-    .hide {
-        @apply opacity-0 pointer-events-none;
-    }
     .button-line {
         @apply w-10 h-1 block rounded-md bg-white;
     }
+
     .button-hamburger--active-state .button-line:nth-child(2) {
         @apply opacity-0;
     }
+
     .button-hamburger--active-state .button-line:nth-child(1) {
-        transform: translate(0, 12px) rotate(45deg);
+        @apply translate-y-3 rotate-45;
     }
+
     .button-hamburger--active-state .button-line:nth-child(3) {
-        transform: translateY(-13px) rotate(-45deg);
+        @apply -translate-y-3 -rotate-45;
     }
-    .font-icon {
+
+    .font-icon--generic-style {
         @apply text-neutral-100 text-xl h-5;
     }
-    .center {
+
+    .flex-center {
         @apply flex justify-center items-center;
     }
 
-    .app-option--hidden {
+    .option-list--hidden {
         @apply w-0 overflow-hidden scale-0;
     }
 
-    #theme-btn .sun-icon {
+    .theme-btn .sun-icon {
         @apply hidden;
     }
 
-    #theme-btn.active .sun-icon {
+    .theme-btn.active .sun-icon {
         @apply flex;
     }
 
-    #theme-btn.active .moon-icon {
+    .theme-btn.active .moon-icon {
         @apply hidden;
     }
 
-    .sort-items--active {
-        @apply text-green-500 !important;
-    }
-
-    .tooltip {
+    .tooltip-message {
         @apply bg-neutral-700 text-neutral-50 px-2 rounded-md border border-neutral-900 font-semibold dark:bg-neutral-50 dark:border-neutral-300 dark:text-black opacity-0 z-20;
         animation: originateIn 500ms ease forwards;
     }
-    .tooltip > div,
-    .tooltip > div::before {
-        position: absolute;
-        top: -2px;
-        width: 8px;
-        height: 8px;
-        background-color: inherit;
-    }
 
-    .tooltip > div {
-        visibility: hidden;
-    }
-
-    .tooltip > div::before {
-        visibility: visible;
-        content: '';
-        transform: rotate(45deg);
-    }
-
-    .option-style {
-        @apply bg-neutral-700 text-white cursor-pointer;
-    }
-
-    .input-style {
-        @apply rounded-sm h-10 text-sky-50 px-2 py-1 bg-neutral-500 border border-neutral-400 focus:outline-neutral-300 focus:outline-1 text-lg;
-    }
-
-    .input-style--dark {
-        @apply bg-neutral-100 border-neutral-300 focus:outline-neutral-900 text-neutral-900;
+    .tooltip-message > div,
+    .tooltip-message > div::before {
+        @apply content-[''] absolute -top-0.5 w-2 h-2 bg-inherit rotate-45;
     }
 
     .label-style {
-        @apply text-sky-50 text-lg w-fit;
+        @apply text-neutral-200 text-lg w-fit dark:text-neutral-900;
     }
+
+    .input-style {
+        @apply rounded-md h-10 text-sky-50 px-2 py-1 bg-neutral-500 border border-neutral-400 focus:outline-neutral-300 focus:outline-1 text-lg hover:bg-neutral-400 transition-colors dark:bg-neutral-100 dark:border-neutral-300 dark:focus:outline-neutral-900 dark:text-neutral-900 dark:hover:bg-neutral-200;
+    }
+
     .search--active {
         @apply bg-green-600 border-green-600 dark:bg-green-600 dark:border-green-700 !important;
     }
+
     .search--active > i {
         @apply dark:text-neutral-100;
     }
+
     .search--active:hover {
         @apply bg-green-900 border-green-700 !important;
     }
+
     #add-todo-btn[disabled] {
-        @apply opacity-10 pointer-events-none select-none;
+        @apply opacity-30 select-none cursor-not-allowed;
     }
+
     .todo-container__item {
-        min-width: 300px;
+        min-width: 250px;
         max-width: 400px;
     }
 
-    .todo-container__item.completed:hover::before {
-        content: '';
-        background-color: rgba(49, 49, 49, .4);
+    .todo-container__item.completed::before {
+        @apply content-['Completed'] absolute text-3xl font-semibold flex-center rounded-md text-white inset-0 bg-neutral-800/90 transition-colors;
     }
 
-    .todo-container__item.completed::before {
-        content: 'Completed';
-        position: absolute;
-        font-size: 2rem;
-        font-weight: 600;
-        display: grid;
-        place-items: center;
-        background-color: rgba(49, 49, 49, .9);
-        border-radius: 0.375rem;
-        color: #fff;
-        inset: 0;
-        transition: background-color 300ms ease
+    .todo-container__item.completed:hover::before {
+        @apply content-[''] bg-neutral-800/40;
     }
 
     .todo-container__item.originateTodo {
@@ -128,7 +99,7 @@
     }
 
     body[data-disabled] .todo-container__item.todo-options--active > button {
-        @apply opacity-0 pointer-events-none;
+        @apply opacity-0 pointer-events-none !important;
     }
 
     .todo-container__item.selected {
@@ -140,8 +111,7 @@
     }
 
     .todo-container__item.dragging-enabled {
-        cursor: move;
-        z-index: 30;
+        @apply cursor-move z-30;
     }
 
     .todo-container__item.dragging-enabled > * {
@@ -161,25 +131,26 @@
     }
 
     body[data-disabled]::before {
-        content: '';
-        position: fixed;
-        inset: 0;
-        background-color: rgba(0, 0, 0, 0.86);
-        z-index: 10;
+        @apply content-[''] fixed inset-0 bg-neutral-900/90 z-10;
     }
+
     body[data-disabled] .button-line {
         @apply bg-neutral-200;
     }
+
     body[data-disabled] #change-order-btn > i {
         @apply text-green-400 z-20;
     }
+
     .notyfication-popup {
         --timer-duration: 5s;
-        @apply fixed top-0 left-1/2 -translate-x-1/2 -translate-y-full font-bold text-2xl bg-neutral-500 py-4 px-6 rounded-md border border-neutral-300 text-neutral-50 overflow-hidden dark:bg-neutral-100 dark:text-black dark:border-neutral-400 transition-transform cursor-pointer;
+        @apply fixed top-0 left-1/2 -translate-x-1/2 -translate-y-full font-bold text-2xl bg-neutral-500 py-4 px-6 rounded-md border border-neutral-300 text-neutral-50 overflow-hidden dark:bg-neutral-100 dark:text-black dark:border-neutral-400 transition-transform cursor-pointer text-center w-10/12 max-w-max z-30;
     }
+
     .notyfication-popup.visible {
         animation: showIn 400ms ease-in forwards;
     }
+
     .notyfication-popup.visible::before {
         @apply content-[''] absolute bottom-0 left-0 w-full h-1 bg-orange-400;
         animation: shrinkToZero var(--timer-duration) 400ms linear forwards;
@@ -205,6 +176,7 @@
             @apply translate-y-4;
         }
     }
+
     @keyframes shrinkToZero {
         to {
             @apply w-0;

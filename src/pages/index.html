@@ -15,8 +15,7 @@
     </head>
     <body class="min-h-screen bg-neutral-800 py-3 px-4 flex flex-col gap-4 dark:bg-neutral-50 transition-colors">
         <nav
-            id="navbar"
-            class="bg-neutral-600 flex gap-6 py-4 px-3 rounded-md border border-neutral-500 border-solid dark:bg-neutral-100 transition-colors"
+            class="bg-neutral-600 flex gap-6 py-4 px-3 rounded-md border border-neutral-500 border-solid dark:bg-neutral-100 transition-colors navbar"
         >
             <header>
                 <h1 class="font-medium text-neutral-100 text-lg leading-6 select-none dark:text-black w-min">
@@ -25,50 +24,49 @@
             </header>
             <div class="grow flex relative overflow-hidden">
                 <button
-                    id="search-btn"
-                    class="border-2 rounded-md rounded-r-none w-12 h-full border-neutral-500 hover:bg-neutral-500 transition-colors flex items-center justify-center dark:border-neutral-300 dark:hover:bg-neutral-200"
+                    class="border-2 rounded-md rounded-r-none w-12 h-full border-neutral-500 hover:bg-neutral-500 transition-colors flex items-center justify-center dark:border-neutral-300 dark:hover:bg-neutral-200 search-btn"
                 >
-                    <i class="fa-solid fa-magnifying-glass font-icon dark:text-neutral-900"></i>
+                    <i class="fa-solid fa-magnifying-glass font-icon--generic-style dark:text-neutral-900"></i>
                 </button>
                 <input
-                    id="search-input"
-                    class="rounded-md rounded-l-none w-full pl-4 text-neutral-50 text-xl font-medium antialiased bg-neutral-700 border-2 border-neutral-500 border-solid border-l-0 focus: outline-neutral-100 placeholder:animate-spin focus: shadow-neutral-800 dark:bg-neutral-100 dark:border-neutral-300 dark:text-neutral-900 dark:focus:outline-neutral-900"
+                    class="search-input rounded-md rounded-l-none w-full pl-4 text-neutral-50 text-xl font-medium antialiased bg-neutral-700 border-2 border-neutral-500 border-solid border-l-0 focus: outline-neutral-100 placeholder:animate-spin focus: shadow-neutral-800 dark:bg-neutral-100 dark:border-neutral-300 dark:text-neutral-900 dark:focus:outline-neutral-900"
                     placeholder="Search your todo ..."
                     type="search"
                 />
             </div>
             <ul
-                class="center gap-6 bg-neutral-500 rounded-md p-4 py-3 border border-neutral-400 app-option--hidden transition-transform origin-right dark:border-neutral-300 dark:bg-neutral-100"
+                class="flex-center gap-6 bg-neutral-500 rounded-md p-4 py-3 border border-neutral-400 option-list--hidden transition-transform origin-right dark:border-neutral-300 dark:bg-neutral-100"
             >
                 <li>
-                    <button id="theme-btn" data-option-name="Theme" class="center relative z-0">
-                        <span class="sun-icon center"><i class="fa-solid fa-sun font-icon dark:text-black"></i></span>
-                        <span class="moon-icon center"><i class="fa-solid fa-moon font-icon"></i></span>
+                    <button data-option-name="Theme" class="flex-center relative z-0 theme-btn">
+                        <span class="sun-icon flex-center"><i class="fa-solid fa-sun font-icon--generic-style dark:text-black"></i></span>
+                        <span class="moon-icon flex-center"><i class="fa-solid fa-moon font-icon--generic-style"></i></span>
                     </button>
                 </li>
                 <li>
                     <button
                         id="change-order-btn"
                         data-option-name="Change order"
-                        class="center relative before:transition-opacity hover:before:opacity-100"
+                        class="flex-center relative before:transition-opacity hover:before:opacity-100"
                     >
-                        <i class="fa-solid fa-arrow-pointer font-icon dark:text-black"></i>
+                        <i class="fa-solid fa-arrow-pointer font-icon--generic-style dark:text-black"></i>
                     </button>
                 </li>
             </ul>
-            <button id="button-app-options" class="flex flex-col gap-2 min-h-full justify-center z-30 relative">
+            <button
+                id="button-app-options"
+                class="flex flex-col gap-2 min-h-full justify-center z-30 relative rounded-md box-content p-2 transition-colors"
+            >
                 <span class="button-line dark:bg-neutral-900 transition-transform dark:bg-dark"></span>
                 <span class="button-line dark:bg-neutral-900 transition-transform"></span>
                 <span class="button-line dark:bg-neutral-900 transition-transform"></span>
             </button>
         </nav>
         <main
-            id="todo-container"
-            class="bg-neutral-600 border border-neutral-500 grow rounded-md p-5 gap-6 flex justify-start items-start flex-wrap relative content-start dark:bg-neutral-100 transition-colors"
+            class="bg-neutral-600 border border-neutral-500 grow rounded-md p-5 gap-6 flex justify-start items-start flex-wrap relative content-start dark:bg-neutral-100 transition-colors todo-container"
         >
             <button
-                id="add-todo-btn"
-                class="w-64 bg-neutral-800 text-neutral-50 rounded-md py-10 text-2xl font-medium border-2 border-neutral-500 hover:bg-neutral-700 dark:border-neutral-300 dark:bg-neutral-100 dark:hover:bg-neutral-200 dark:text-neutral-900 max-h-48 transition-colors"
+                class="w-64 bg-neutral-800 text-neutral-50 rounded-md py-10 text-2xl font-medium border-2 border-neutral-500 hover:bg-neutral-700 dark:border-neutral-300 dark:bg-neutral-100 dark:hover:bg-neutral-200 dark:text-neutral-900 max-h-48 transition-colors add-todo-btn"
             >
                 Add <br />
                 todo

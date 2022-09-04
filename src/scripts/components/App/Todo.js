@@ -1,5 +1,3 @@
-// import { v4 as uuidv4 } from 'uuid';
-
 export class Todo {
     constructor(title, description, date, id, isFinished) {
         this.title = title;
@@ -10,7 +8,7 @@ export class Todo {
     }
 
     renderTodo() {
-        const addTodoBtn = document.getElementById('add-todo-btn');
+        const addTodoBtn = document.querySelector('.add-todo-btn');
         if (this.isFinished) return this;
         const todoHTMLTemplate = this.#createTodoTemplate();
         addTodoBtn.insertAdjacentHTML('beforebegin', todoHTMLTemplate);
@@ -19,7 +17,7 @@ export class Todo {
     }
 
     renderFinishedTodo() {
-        const addTodoBtn = document.getElementById('add-todo-btn');
+        const addTodoBtn = document.querySelector('.add-todo-btn');
         const todoHTMLTemplate = this.#createTodoTemplate();
         addTodoBtn.insertAdjacentHTML('beforebegin', todoHTMLTemplate);
         const newAddedTodo = [...document.querySelectorAll('.todo-container__item')].find(todo => todo.id === this.id);

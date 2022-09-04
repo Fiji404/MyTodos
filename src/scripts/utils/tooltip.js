@@ -1,17 +1,19 @@
-export const createTooltipElement = msg => {
-    const tooltip = document.createElement('div');
-    const tooltipHeading = createTooltipHeading(msg);
+const createTooltipElement = msg => {
+    const tooltipEl = document.createElement('div');
+    const tooltipHeadingEl = createTooltipTitle(msg);
     const tooltipArrow = document.createElement('div');
-    tooltip.classList.add('tooltip');
-    tooltipArrow.setAttribute('data-popper-arrow', '');
-    tooltip.append(tooltipHeading);
-    tooltip.append(tooltipArrow);
-    document.body.append(tooltip);
-    return tooltip;
+    tooltipEl.classList.add('tooltip-message');
+    tooltipArrow.dataset.popperArrow = '';
+    tooltipEl.append(tooltipHeadingEl);
+    tooltipEl.append(tooltipArrow);
+    document.body.append(tooltipEl);
+    return tooltipEl;
 };
 
-const createTooltipHeading = msg => {
-    const tooltipHeading = document.createElement('h2');
-    tooltipHeading.textContent = msg;
-    return tooltipHeading;
+const createTooltipTitle = msg => {
+    const tooltipTitle = document.createElement('h2');
+    tooltipTitle.textContent = msg;
+    return tooltipTitle;
 };
+
+export { createTooltipElement };
