@@ -1,24 +1,27 @@
-export const createNotyficationElement = msg => {
-    const notyficationElement = document.querySelector('.notyfication-popup');
-    if (notyficationElement) {
-        notyficationElement.remove();
-        return createNotyficationElement(msg);
-    }
-    const divElement = document.createElement('div');
-    divElement.classList.add('notyfication-popup');
-    divElement.classList.add('visible');
-    divElement.setAttribute('data-timer', 5);
-    const notyficationHeadingElement = createHeadingMessageElement(msg);
-    divElement.append(notyficationHeadingElement);
-    document.body.append(divElement);
-    divElement.addEventListener('click', () => divElement.remove());
-    removeNotyficationAfterDelay(divElement.dataset.timer).catch(() => divElement.remove());
+export const createPopUpElement = (msg, cssClass, popUpType) => {
+    const { popUpElement: popUpEl, isPopUpExist } = checkIsPopUpElementExist(cssClass);
+    if (isPopUpExist) popUpEl.remove();
+    const popUpElement = document.createElement('div');
+    const headingElement = createHeadingElement(msg, popUpType);
+    popUpElement.classList.add(cssClass, 'visible');
+    popUpElement.append(headingElement);
+    document.body.append(popUpElement);
+    popUpElement.addEventListener('click', popUpElement.remove);
+    removePopUpAfterTime(2.5).catch(() => popUpElement.remove());
 };
 
-const createHeadingMessageElement = msg => {
+const checkIsPopUpElementExist = cssClass => {
+    const popUpElement = document.querySelector(`.${cssClass}`);
+    if (popUpElement) return { popUpElement, isPopUpExist: true };
+    return { popUpElement: null, isPopUpExist: false };
+};
+
+const createHeadingElement = (msg, popUpType) => {
     const headingElement = document.createElement('h2');
     headingElement.textContent = msg;
+    if (popUpType === 'success')
+        headingElement.innerHTML = `${msg} <span><i class="fa-solid fa-circle-check text-green-400 ml-1"></i></span>`;
     return headingElement;
 };
 
-const removeNotyficationAfterDelay = time => new Promise((_, reject) => setTimeout(reject, time * 1100));
+const removePopUpAfterTime = sec => new Promise((_, reject) => setTimeout(reject, sec * 1100));

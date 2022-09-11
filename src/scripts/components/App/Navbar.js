@@ -1,7 +1,7 @@
 import { createPopper } from '@popperjs/core';
-import { createTooltipElement } from '../../utils/tooltip';
+import { createTooltipElement } from '../../utils/Tooltip';
 
-class Navbar {
+export class Navbar {
     #navbarEl = document.querySelector('.navbar');
     #searchInputEl = document.querySelector('.search-input');
     #searchTodoBtn = document.querySelector('.search-btn');
@@ -50,7 +50,7 @@ class Navbar {
         const closestTargetElement =
             target.closest('.theme-btn') ||
             target.closest('#change-order-btn') ||
-            target.closest('#cancel-add-todo-btn') ||
+            target.closest('.cancel-add-todo-btn') ||
             target.closest('#complete-todo-btn') ||
             target.closest('#remove-todo-btn');
         if (!closestTargetElement) return;
@@ -71,7 +71,7 @@ class Navbar {
         const closestTargetElement =
             target.closest('.theme-btn') ||
             target.closest('#change-order-btn') ||
-            target.closest('#cancel-add-todo-btn') ||
+            target.closest('.cancel-add-todo-btn') ||
             target.closest('#complete-todo-btn') ||
             target.closest('#remove-todo-btn');
         if (!closestTargetElement) return;
@@ -111,5 +111,3 @@ class Navbar {
         localStorage.setItem('Theme', document.documentElement.className);
     }
 }
-
-export { Navbar };
