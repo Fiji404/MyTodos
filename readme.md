@@ -1,13 +1,31 @@
-# This app was made for managing your tasks and doing some cool stuff ✨
-## Info about used features/tech
+# This application was created to manage your daily tasks
+## Used technologies
 
-- App was build with OOP paradigm.
-- Light/dark theme mode
-- Implemented Drag and Drop API
+- Tailwind CSS
+- TypeScript
+- OOP oriented programming
+- Drag and Drop API
+## Run Locally
 
-## Deployment
+Clone the project
 
-To run this app locally, write in your terminal
+```bash
+  git clone https://github.com/Fiji404/My-Todos.git
+```
+
+Go to the project directory
+
+```bash
+  cd My-Todos
+```
+
+Install dependencies
+
+```bash
+  npm i
+```
+
+Start the server
 
 ```bash
   npm run dev-start
@@ -15,4 +33,4 @@ To run this app locally, write in your terminal
 
 ## Demo
 
-Link -> [My Todos](https://mytodos.ink)
+App you can check there -> [My Todos](https://mytodos.ink)

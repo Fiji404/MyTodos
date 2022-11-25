@@ -1,8 +1,8 @@
-import datepicker from 'js-datepicker';
+const datepicker = require('js-datepicker')
 
 const replaceDatepickerInTodoForm = () => {
-    const inputDateEl = document.querySelector('.finish-date');
-    return datepicker(inputDateEl, { minDate: new Date() });
+    const inputDateElement = document.querySelector('.finish-date');
+    return datepicker(inputDateElement, { minDate: new Date() });
 };
 
 export const createTodoFormElement = () => {
@@ -43,6 +43,6 @@ export const createTodoFormElement = () => {
                     Add Todo <i class="fa-solid fa-check"></i>
                 </button>
             </form>`;
-    addNewTodoBtn.insertAdjacentHTML('beforebegin', formHTMLTemplate);
+    addNewTodoBtn?.insertAdjacentHTML('beforebegin', formHTMLTemplate);
     return { formElement: document.querySelector('.add-todo-form'), datePickerInstance: replaceDatepickerInTodoForm() };
 };

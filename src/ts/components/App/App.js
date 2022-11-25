@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { Todo } from './Todo';
-import { createPopUpElement } from '../../utils/PopUpMessage';
-import { createTodoFormElement } from '../../utils/TodoForm';
+import { createModalElement } from '../../utils/Modal';
+import { createTodoFormElement } from '../../utils/TodoCreateForm';
 import { setDragEvents, removeDragEvents } from '../../utils/DragAndDrop';
 
 export class App {
@@ -74,7 +74,7 @@ export class App {
         const finishTodoDate = this.#datepickerEl.dateSelected?.toISOString();
         const todoID = uuidv4();
         if (!this.#checkProvidedDataForNewTodo(todoTitle, todoDesc))
-            return createPopUpElement('Check provided data !', 'error-message');
+            return createModalElement('Check provided data !', '.error-message');
 
         const notyficationEl = document.querySelector('.notyfication-popup');
         if (notyficationEl) notyficationEl.remove();
@@ -124,7 +124,7 @@ export class App {
         if (document.body.dataset.disabled) {
             removeDragEvents(this.#todoElements, this.#todosContainerEl);
             this.#saveTodosOrderToLS();
-            return createPopUpElement('Saved', 'success-message', 'success');
+            return createModalElement('Saved', '.success-message', 'success');
         }
         setDragEvents(this.#todoElements, this.#todosContainerEl);
     }
