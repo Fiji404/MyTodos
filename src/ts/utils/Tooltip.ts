@@ -1,5 +1,6 @@
-export const createTooltipElement = (msg: string) => {
+export const createTooltipElement = (msg?: string) => {
     const tooltipElement = document.createElement('div');
+    if (!msg) return;
     const tooltipHeadingElement = createTooltipTitle(msg);
     const tooltipArrow = document.createElement('div');
     tooltipElement.classList.add('tooltip-message');

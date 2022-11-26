@@ -1,30 +1,26 @@
 export class Todo {
-    constructor(title, description, date, id, isFinished) {
-        this.title = title;
-        this.description = description;
-        this.date = date || null;
-        this.id = id;
-        this.isFinished = isFinished || false;
-    }
+    constructor(private title: string, private description: string, private id: string, private isFinished: boolean, private date?: string) {}
 
     renderTodo() {
         const addTodoBtn = document.querySelector('.add-todo-btn');
         if (this.isFinished) return this;
         const todoHTMLTemplate = this.#createTodoTemplate();
-        addTodoBtn.insertAdjacentHTML('beforebegin', todoHTMLTemplate);
+        if (todoHTMLTemplate) addTodoBtn?.insertAdjacentHTML('beforebegin', todoHTMLTemplate);
         const newAddedTodo = [...document.querySelectorAll('.todo-container__item')].find(todo => todo.id === this.id);
-        newAddedTodo.classList.add('originateTodo');
+        newAddedTodo?.classList.add('originateTodo');
     }
 
     renderFinishedTodo() {
         const addTodoBtn = document.querySelector('.add-todo-btn');
         const todoHTMLTemplate = this.#createTodoTemplate();
-        addTodoBtn.insertAdjacentHTML('beforebegin', todoHTMLTemplate);
+
+        if (todoHTMLTemplate) addTodoBtn?.insertAdjacentHTML('beforebegin', todoHTMLTemplate);
         const newAddedTodo = [...document.querySelectorAll('.todo-container__item')].find(todo => todo.id === this.id);
-        newAddedTodo.classList.add('originateTodo');
+        newAddedTodo?.classList.add('originateTodo');
     }
 
     #createTodoTemplate() {
+        if (!this.date) return;
         const ISOStringToDateObject = new Date(this.date);
         const transformedDateToUserFriendlyFormat = this.#transformDateToUserFriendlyFormat(
             ISOStringToDateObject.getDate()
@@ -72,7 +68,7 @@ export class Todo {
         return todoHTMLTemplate;
     }
 
-    #transformDateToUserFriendlyFormat(day) {
+    #transformDateToUserFriendlyFormat(day: number) {
         const currentDay = new Date().getDate();
         const checkIsPassedDayBeginInFuture = this.#transformFutureDayToFriendlyName(day, currentDay);
         const checkIsDayPassedInPast = this.#checkIsDayPassedInPast(day, currentDay);
@@ -80,7 +76,7 @@ export class Todo {
         if (checkIsDayPassedInPast) return checkIsDayPassedInPast;
         return day;
     }
-    #transformFutureDayToFriendlyName(day, currentDay) {
+    #transformFutureDayToFriendlyName(day: number, currentDay: number) {
         const transformedFutureDateToFriendlyFormat =
             day === currentDay
                 ? 'Today'
@@ -94,7 +90,7 @@ export class Todo {
         return transformedFutureDateToFriendlyFormat;
     }
 
-    #checkIsDayPassedInPast(day, currentDay) {
+    #checkIsDayPassedInPast(day: number, currentDay: number) {
         const transformedPastDateToFriendlyFormat =
             day === currentDay - 1
                 ? 'Yesterday'

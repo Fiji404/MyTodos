@@ -2,27 +2,26 @@ import { createPopper } from '@popperjs/core';
 import { createTooltipElement } from '../../utils/Tooltip';
 
 export class Navbar {
-    #navbarEl = document.querySelector('.navbar');
-    #searchInputEl = document.querySelector('.search-input');
+    #navbarEl = document.querySelector('.navbar') as HTMLElement;
+    #searchInputEl = document.querySelector('.search-input') as HTMLInputElement;
     #searchTodoBtn = document.querySelector('.search-btn');
-    #todosContainer = document.querySelector('.todo-container');
-    #tooltipElement: HTMLDivElement;
+    #todosContainer = document.querySelector('.todo-container') as HTMLElement;
+    #tooltipElement: HTMLDivElement | undefined;
     constructor() {
-        [this.#navbarEl, this.#todosContainer].forEach(targetEventEl =>
-            targetEventEl.addEventListener('click', this.#listenClickEvents.bind(this))
-        );
         this.#searchInputEl.addEventListener('input', this.#listenInputEvents.bind(this));
-        [this.#navbarEl, this.#todosContainer].forEach(targetEventEl =>
-            targetEventEl.addEventListener('mouseover', this.#listenHoverEvents.bind(this))
-        );
-        [this.#navbarEl, this.#todosContainer].forEach(targetEventEl =>
-            targetEventEl.addEventListener('mouseout', this.#listenMouseOutEvents.bind(this))
-        );
+        this.#registerEvents(this.#navbarEl, this.#todosContainer);
         this.#checkUserThemePreference();
-        this.#tooltipElement = 
+        this.#tooltipElement = undefined;
+    }
+    #registerEvents(...targetElements: HTMLElement[]) {
+        targetElements.forEach(targetElement => {
+            targetElement.addEventListener('mouseout', this.#listenMouseOutEvent.bind(this));
+            targetElement.addEventListener('mouseover', this.#listenMouseOverEvent.bind(this));
+            targetElement.addEventListener('click', this.#listenClickEvent.bind(this));
+        });
     }
 
-    #listenClickEvents({ target }: { target: Element }) {
+    #listenClickEvent({ target }: { target: Element }) {
         const closestTargetElement =
             target.closest('#search-btn') ||
             target.closest('#button-app-options') ||
@@ -31,7 +30,8 @@ export class Navbar {
             target.closest('#complete-todo-btn');
         if (!closestTargetElement) return;
         if (closestTargetElement.matches('#search-btn')) {
-            if ((closestTargetElement.nextElementSibling as HTMLInputElement).value) return this.#searchTodoItem((closestTargetElement.nextElementSibling as HTMLInputElement).value);
+            if ((closestTargetElement.nextElementSibling as HTMLInputElement).value)
+                return this.#searchTodoItem((closestTargetElement.nextElementSibling as HTMLInputElement).value);
             (closestTargetElement.nextElementSibling as HTMLElement)?.focus();
         }
         if (closestTargetElement.matches('#button-app-options')) {
@@ -43,19 +43,20 @@ export class Navbar {
             this.#deleteTooltipElement();
     }
 
-    #listenInputEvents({ target: { value }}) {
-        this.#searchTodoBtn?.classList.toggle('search--active', !!value);
+    #listenInputEvents(e: Event) {
+        if (!e.target) return;
+        this.#searchTodoBtn?.classList.toggle('search--active', !!(e.target as HTMLInputElement).value);
     }
 
-    #listenHoverEvents({ target }: { target: Element }) {
-        const closestTargetElement =
-            target.closest('.theme-btn') ||
+    #listenMouseOverEvent({ target }: { target: Element }) {
+        const closestTargetElement = (target.closest('.theme-btn') ||
             target.closest('#change-order-btn') ||
             target.closest('.cancel-add-todo-btn') ||
             target.closest('#complete-todo-btn') ||
-            target.closest('#remove-todo-btn');
+            target.closest('#remove-todo-btn')) as HTMLElement;
         if (!closestTargetElement) return;
         this.#tooltipElement = createTooltipElement(closestTargetElement.dataset.optionName);
+        if (!this.#tooltipElement) return;
         createPopper(closestTargetElement, this.#tooltipElement, {
             modifiers: [
                 {
@@ -68,7 +69,7 @@ export class Navbar {
         });
     }
 
-    #listenMouseOutEvents({ target }: {target: Element}) {
+    #listenMouseOutEvent({ target }: { target: Element }) {
         const closestTargetElement =
             target.closest('.theme-btn') ||
             target.closest('#change-order-btn') ||
@@ -80,6 +81,7 @@ export class Navbar {
     }
 
     #deleteTooltipElement() {
+        if (!this.#tooltipElement) return;
         this.#tooltipElement.remove();
     }
 
@@ -103,12 +105,12 @@ export class Navbar {
         document.documentElement.classList.add(theme);
     }
 
-    #toggleUserTheme(changeThemeBtn: HTMLButtonElement) {
+    #toggleUserTheme(changeThemeBtn: Element) {
         const rootElement = document.documentElement;
         changeThemeBtn.classList.toggle('active');
-        if (rootElement.classList.contains('dark')) rootElement.classList.replace('dark', 'light');
-        else if (rootElement.classList.contains('light')) rootElement.classList.replace('light', 'dark');
-        else rootElement.classList.add('dark');
+        if (rootElement.classList.contains('dark')) return rootElement.classList.replace('dark', 'light');
+        if (rootElement.classList.contains('light')) return rootElement.classList.replace('light', 'dark');
+        rootElement.classList.add('dark');
         localStorage.setItem('Theme', document.documentElement.className);
     }
 }
