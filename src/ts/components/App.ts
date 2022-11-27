@@ -4,14 +4,6 @@ import { createModalElement } from '../utils/Modal';
 import { createTodoFormElement } from '../utils/TodoCreateForm';
 import { setDragEvents, removeDragEvents } from '../utils/DragAndDrop';
 
-interface TodoDetails {
-    title: string;
-    description: string;
-    id: string;
-    isFinished: boolean;
-    date: string | undefined;
-}
-
 export class App {
     #addNewTodoBtn = document.querySelector('.add-todo-btn');
     #todosContainerEl = document.querySelector('.todo-container') as HTMLElement;
@@ -24,7 +16,6 @@ export class App {
         this.#reOrderTodosBtn?.addEventListener('click', this.#enableTodosReOrder.bind(this));
         window.addEventListener('DOMContentLoaded', this.#renderUserTodosFromLS.bind(this));
         this.#todoElements = [];
-        this.#createNewTodoFormEl = new HTMLFormElement();
     }
 
     #listenClickEventsInTodoContainer() {
@@ -93,7 +84,7 @@ export class App {
         if (notyficationEl) notyficationEl.remove();
         const todo = new Todo(todoTitle.value, todoDesc.value, finishTodoDate, todoID);
         todo.renderTodo();
-        this.#todoElements = [...document.querySelectorAll('.todo-container__item')];
+        this.#todoElements = Array.from(document.querySelectorAll('.todo-container__item'));
         const userTodosFromLS = this.#getUserTodosFromLS() || [];
         userTodosFromLS.push(todo);
         localStorage.setItem('todos', JSON.stringify(userTodosFromLS));
@@ -131,7 +122,7 @@ export class App {
             finishedTodos.forEach(({ title, description, date, id, isFinished }) =>
                 new Todo(title, description, isFinished, id, date).renderFinishedTodo()
             );
-        this.#todoElements = [...document.querySelectorAll('.todo-container__item')];
+        this.#todoElements = Array.from(document.querySelectorAll('.todo-container__item'));
     }
 
     #enableTodosReOrder() {

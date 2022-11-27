@@ -1,5 +1,4 @@
 import { datepicker } from 'js-datepicker';
-
 const replaceDatepickerInTodoForm = () => {
     const inputDateElement = document.querySelector('.finish-date');
     if (!inputDateElement) return;

@@ -2,23 +2,23 @@
     "name": "my-todos",
     "version": "1.0.0",
     "scripts": {
-        "parcel-dev": "parcel src/pages/index.html",
-        "parcel-build": "parcel build src/pages/index.html",
-        "tailwind-watch": "tailwind -i ./src/css/index.css -o ./src/css/app.css --watch --minify",
-        "tailwind-build": "tailwind build ./src/css/index.css -o ./src/css/app.css",
-        "dev-start": "npm run parcel-dev & npm run tailwind-watch",
-        "build-start": "npm run parcel-build & npm run tailwind-build"
+        "dev": "concurrently \"npm:vite\" \"npm:tailwind-dev\"",
+        "build": "concurrently \"npm:vite\" \"npm:tailwind-build\"",
+        "vite": "vite",
+        "tailwind-dev": "tailwind -i ./src/styles/index.css -o ./src/styles/app.css --watch",
+        "tailwind-build": "tailwind build ./src/styles/index.css -o ./src/styles/app.css"
     },
     "license": "ISC",
     "dependencies": {
         "@popperjs/core": "^2.11.6",
-        "@types/uuid": "^8.3.4",
-        "js-datepicker": "^5.18.0",
-        "tailwindcss": "^3.1.8",
-        "typescript": "^4.8.4",
+        "js-datepicker": "^5.18.1",
         "uuid": "^8.3.2"
     },
     "devDependencies": {
-        "parcel": "^2.7.0"
+        "@types/uuid": "^8.3.4",
+        "concurrently": "^7.6.0",
+        "tailwindcss": "^3.2.4",
+        "typescript": "^4.8.4",
+        "vite": "^3.2.4"
     }
 }
