@@ -1,7 +1,8 @@
-const datepicker = require('js-datepicker')
+import { datepicker } from 'js-datepicker';
 
 const replaceDatepickerInTodoForm = () => {
     const inputDateElement = document.querySelector('.finish-date');
+    if (!inputDateElement) return;
     return datepicker(inputDateElement, { minDate: new Date() });
 };
 

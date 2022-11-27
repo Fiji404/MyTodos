@@ -1,4 +1,4 @@
-export const createModalElement = (msg: string, cssClass: string, modalType: string) => {
+export const createModalElement = (msg: string, cssClass: string, modalType: string = 'success') => {
     const prevModalElement = getPreviousModalElement(cssClass);
     if (prevModalElement) prevModalElement.remove();
     const modalElement = document.createElement('div');

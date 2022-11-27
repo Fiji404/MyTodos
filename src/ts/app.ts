@@ -1,5 +1,5 @@
-import { App } from './components/App/App';
-import { Navbar } from './components/App/Navbar';
+import { App } from './components/App';
+import { Navbar } from './components/Navbar';
 
 const app = new App();
 const navbar = new Navbar();

@@ -1,5 +1,5 @@
 import { createPopper } from '@popperjs/core';
-import { createTooltipElement } from '../../utils/Tooltip';
+import { createTooltipElement } from '../utils/Tooltip';
 
 export class Navbar {
     #navbarEl = document.querySelector('.navbar') as HTMLElement;
@@ -21,7 +21,8 @@ export class Navbar {
         });
     }
 
-    #listenClickEvent({ target }: { target: Element }) {
+    #listenClickEvent({ target }: MouseEvent) {
+        if (!(target instanceof HTMLElement)) return;
         const closestTargetElement =
             target.closest('#search-btn') ||
             target.closest('#button-app-options') ||
@@ -48,7 +49,8 @@ export class Navbar {
         this.#searchTodoBtn?.classList.toggle('search--active', !!(e.target as HTMLInputElement).value);
     }
 
-    #listenMouseOverEvent({ target }: { target: Element }) {
+    #listenMouseOverEvent({ target }: MouseEvent) {
+        if (!(target instanceof HTMLElement)) return;
         const closestTargetElement = (target.closest('.theme-btn') ||
             target.closest('#change-order-btn') ||
             target.closest('.cancel-add-todo-btn') ||
@@ -69,7 +71,8 @@ export class Navbar {
         });
     }
 
-    #listenMouseOutEvent({ target }: { target: Element }) {
+    #listenMouseOutEvent({ target }: MouseEvent) {
+        if (!(target instanceof HTMLElement)) return;
         const closestTargetElement =
             target.closest('.theme-btn') ||
             target.closest('#change-order-btn') ||
