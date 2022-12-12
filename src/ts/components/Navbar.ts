@@ -3,12 +3,11 @@ import { createTooltipElement } from '../utils/Tooltip';
 
 export class Navbar {
     #navbarEl = document.querySelector('.navbar') as HTMLElement;
-    #searchInputEl = document.querySelector('.search-input') as HTMLInputElement;
-    #searchTodoBtn = document.querySelector('.search-btn');
+    #searchInputEl = document.querySelector<HTMLInputElement>('.search-input');
     #todosContainer = document.querySelector('.todo-container') as HTMLElement;
     #tooltipElement: HTMLDivElement | undefined;
     constructor() {
-        this.#searchInputEl.addEventListener('input', this.#listenInputEvents.bind(this));
+        this.#searchInputEl?.addEventListener('input', this.#listenInputEvents.bind(this));
         this.#registerEvents(this.#navbarEl, this.#todosContainer);
         this.#checkUserThemePreference();
         this.#tooltipElement = undefined;
@@ -24,21 +23,10 @@ export class Navbar {
     #listenClickEvent({ target }: MouseEvent) {
         if (!(target instanceof HTMLElement)) return;
         const closestTargetElement =
-            target.closest('#search-btn') ||
-            target.closest('#button-app-options') ||
             target.closest('.theme-btn') ||
             target.closest('#remove-todo-btn') ||
             target.closest('#complete-todo-btn');
         if (!closestTargetElement) return;
-        if (closestTargetElement.matches('#search-btn')) {
-            if ((closestTargetElement.nextElementSibling as HTMLInputElement).value)
-                return this.#searchTodoItem((closestTargetElement.nextElementSibling as HTMLInputElement).value);
-            (closestTargetElement.nextElementSibling as HTMLElement)?.focus();
-        }
-        if (closestTargetElement.matches('#button-app-options')) {
-            closestTargetElement.classList.toggle('button-hamburger--active-state');
-            closestTargetElement.previousElementSibling?.classList.toggle('option-list--hidden');
-        }
         if (closestTargetElement.matches('.theme-btn')) this.#toggleUserTheme(closestTargetElement);
         if (closestTargetElement.matches('#remove-todo-btn') || closestTargetElement.matches('#complete-todo-btn'))
             this.#deleteTooltipElement();
@@ -46,7 +34,7 @@ export class Navbar {
 
     #listenInputEvents(e: Event) {
         if (!e.target) return;
-        this.#searchTodoBtn?.classList.toggle('search--active', !!(e.target as HTMLInputElement).value);
+        // handle todo searching
     }
 
     #listenMouseOverEvent({ target }: MouseEvent) {

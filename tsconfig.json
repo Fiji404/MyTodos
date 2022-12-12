@@ -1,25 +1,12 @@
 {
+  "extends": "astro/tsconfigs/strict",
     "compilerOptions": {
-        "target": "ES2016",
-        "useDefineForClassFields": true,
+        "target": "ES6",
         "module": "ESNext",
-        "lib": [
-            "ESNext",
-            "DOM"
-        ],
-        "moduleResolution": "Node",
         "strictPropertyInitialization": false,
-        "strict": true,
-        "resolveJsonModule": true,
-        "isolatedModules": true,
+        "moduleResolution": "Node",
         "esModuleInterop": true,
-        "noEmit": true,
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
-        "noImplicitReturns": true,
         "skipLibCheck": true
     },
-    "include": [
-        "src"
-    ]
+    "include": ["src/**/*.ts"]
 }

@@ -1,0 +1,33 @@
+<nav
+    class="bg-neutral-600 flex gap-6 py-4 px-3 rounded-md border-2 border-neutral-500 dark:bg-neutral-100 dark:border-neutral-200 transition-colors navbar"
+>
+    <header>
+        <a href="/"
+            ><img class="w-14 hover:shadow-xl hover:scale-105 rounded-md transition-all" src="public/favicon.png" alt="tasks app logo" />
+        </a>
+    </header>
+    <input
+        class="rounded-md w-full pl-4 text-neutral-50 text-xl bg-neutral-700 border-2 border-neutral-500 focus:outline-none dark:focus:border-neutral-700 dark:bg-neutral-100 dark:border-neutral-300 dark:text-neutral-900 transition-colors search-input"
+        placeholder="Search your todo ..."
+        type="search"
+    />
+    <ul
+        class="flex-center gap-6 bg-neutral-500 rounded-md p-4 py-3 border-2 border-neutral-400 transition-transform origin-right dark:border-neutral-300 dark:bg-neutral-100"
+    >
+        <li>
+            <button data-option-name="Theme" class="flex-center relative z-0 theme-btn">
+                <span class="sun-icon flex-center"><i class="fa-solid fa-sun font-icon--generic-style dark:text-black"></i></span>
+                <span class="moon-icon flex-center"><i class="fa-solid fa-moon font-icon--generic-style"></i></span>
+            </button>
+        </li>
+        <li>
+            <button
+                id="change-order-btn"
+                data-option-name="Change order"
+                class="flex-center relative before:transition-opacity hover:before:opacity-100"
+            >
+                <i class="fa-solid fa-arrow-pointer font-icon--generic-style dark:text-black"></i>
+            </button>
+        </li>
+    </ul>
+</nav>

@@ -1,13 +1,11 @@
 /** @type {import('tailwindcss').Config} */
+
 module.exports = {
-    content: ['./src/**/*.{html,js}'],
+    content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
     darkMode: 'class',
     theme: {
-        screens: {
-            sm: '300px',
-            md: '640px',
-            lg: '1080px',
-            xl: '1280px',
+        maxWidth: {
+            5: '50px'
         },
         fontFamily: {
             sans: ['Poppins', 'sans-serif'],
