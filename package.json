@@ -6,8 +6,8 @@
         "build": "concurrently \"npm:astro-build\" \"npm:tailwind-build\"",
         "astro-dev": "astro dev",
         "astro-build": "astro build",
-        "tailwind-dev": "tailwind -i ./src/styles/index.css -o ./src/styles/app.css --watch",
-        "tailwind-build": "tailwind build -i ./src/styles/index.css -o ./src/styles/app.css"
+        "tailwind-dev": "tailwind -i ./src/styles/index.css -o dist/app.css --watch",
+        "tailwind-build": "tailwind build -i src/styles/index.css -o dist/app.css"
     },
     "license": "ISC",
     "dependencies": {

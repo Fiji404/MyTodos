@@ -1,5 +1,5 @@
-import type { Datepicker } from "../datepicker";
-import datepicker from "js-datepicker";
+import type { Datepicker } from "../../datepicker";
+// import datepicker from "js-datepicker";
 declare var datepicker: Datepicker; 
 const replaceDatepickerInTodoForm = () => {
     const inputDateElement = document.querySelector('.finish-date');
