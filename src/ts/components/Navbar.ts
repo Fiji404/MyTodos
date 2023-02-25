@@ -23,13 +23,17 @@ export class Navbar {
     #listenClickEvent({ target }: MouseEvent) {
         if (!(target instanceof HTMLElement)) return;
         const closestTargetElement =
-            target.closest('.theme-btn') ||
-            target.closest('#remove-todo-btn') ||
-            target.closest('#complete-todo-btn');
+            target.closest('.theme-btn') || target.closest('#remove-todo-btn') || target.closest('#complete-todo-btn') || target.closest('.expand-options');
         if (!closestTargetElement) return;
         if (closestTargetElement.matches('.theme-btn')) this.#toggleUserTheme(closestTargetElement);
         if (closestTargetElement.matches('#remove-todo-btn') || closestTargetElement.matches('#complete-todo-btn'))
             this.#deleteTooltipElement();
+        if (closestTargetElement.matches('.expand-options')) this.#expandAppOptionsHandler()
+    }
+
+    #expandAppOptionsHandler() {
+        const appOptionsListElement = document.querySelector('.app-options-list');
+        appOptionsListElement.classList.toggle('active');
     }
 
     #listenInputEvents(e: Event) {
@@ -43,7 +47,8 @@ export class Navbar {
             target.closest('#change-order-btn') ||
             target.closest('.cancel-add-todo-btn') ||
             target.closest('#complete-todo-btn') ||
-            target.closest('#remove-todo-btn')) as HTMLElement;
+            target.closest('#remove-todo-btn') ||
+            target.closest('.expand-options')) as HTMLElement;
         if (!closestTargetElement) return;
         this.#tooltipElement = createTooltipElement(closestTargetElement.dataset.optionName);
         if (!this.#tooltipElement) return;
@@ -66,7 +71,8 @@ export class Navbar {
             target.closest('#change-order-btn') ||
             target.closest('.cancel-add-todo-btn') ||
             target.closest('#complete-todo-btn') ||
-            target.closest('#remove-todo-btn');
+            target.closest('#remove-todo-btn') ||
+            target.closest('.expand-options');
         if (!closestTargetElement) return;
         this.#deleteTooltipElement();
     }
@@ -92,8 +98,14 @@ export class Navbar {
 
     loadUserThemeFromLS(theme: string) {
         const themeBtn = document.querySelector('.theme-btn');
-        theme === 'dark' ? themeBtn?.classList.add('active') : themeBtn?.classList.remove('active');
-        document.documentElement.classList.add(theme);
+        if (theme === 'dark') {
+            themeBtn?.classList.add('active')
+            document.documentElement.classList.remove(theme);
+        } else {
+            themeBtn?.classList.remove('active');
+            document.documentElement.classList.add('dark');
+
+        }
     }
 
     #toggleUserTheme(changeThemeBtn: Element) {

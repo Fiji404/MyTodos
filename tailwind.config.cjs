@@ -3,8 +3,15 @@ module.exports = {
     content: ['./src/**/*.{astro,ts}'],
     darkMode: 'class',
     theme: {
+        extend: {
+            colors: {
+                primary: 'rgb(248, 248, 248)',
+                accent: 'rgb(230, 230, 230)',
+                accentDark: 'rgb(40, 40, 40)'
+            },
+        },
         maxWidth: {
-            '5': '50px'
+            5: '50px',
         },
         fontFamily: {
             sans: ['Poppins', 'sans-serif'],

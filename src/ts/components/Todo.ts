@@ -1,5 +1,11 @@
 export class Todo {
-    constructor(public title: string, public description: string, public isFinished: boolean, public id: string, public date?: string) {}
+    constructor(
+        public title: string,
+        public description: string,
+        public isFinished: boolean,
+        public id: string,
+        public date?: string
+    ) {}
 
     renderTodo() {
         const addTodoBtn = document.querySelector('.add-todo-btn');

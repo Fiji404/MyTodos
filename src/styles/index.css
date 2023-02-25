@@ -1,4 +1,3 @@
-@config "../../tailwind.config.ts"
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -6,6 +5,10 @@
 @layer components {
     .button-line {
         @apply w-10 h-1 block rounded-md bg-white;
+    }
+
+    .app-options-list.active {
+        @apply flex h-auto scale-y-100 opacity-100 pointer-events-auto transition-all
     }
 
     .button-hamburger--active-state .button-line:nth-child(2) {

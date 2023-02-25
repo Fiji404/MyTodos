@@ -1,33 +1,42 @@
 <nav
-    class="bg-neutral-600 flex gap-6 py-4 px-3 rounded-md border-2 border-neutral-500 dark:bg-neutral-100 dark:border-neutral-200 transition-colors navbar"
+    class='bg-[#1b1b1b] flex gap-6 py-4 px-3 rounded-md border border-accentDark dark:bg-primary dark:border-accent transition-colors navbar'
 >
     <header>
-        <a href="/"
-            ><img class="w-14 hover:shadow-xl hover:scale-105 rounded-md transition-all" src="public/favicon.png" alt="tasks app logo" />
-        </a>
+        <a href='/'><img class='w-14 rounded-md' src='public/favicon.png' alt='tasks icon' /></a>
     </header>
     <input
-        class="rounded-md w-full pl-4 text-neutral-50 text-xl bg-neutral-700 border-2 border-neutral-500 focus:outline-none dark:focus:border-neutral-700 dark:bg-neutral-100 dark:border-neutral-300 dark:text-neutral-900 transition-colors search-input"
-        placeholder="Search your todo ..."
-        type="search"
+        class='rounded-md grow pl-4 text-neutral-50 text-xl bg-[#1f1f1f] border border-[#303030] focus:outline-none focus:bg-[#272727] dark:focus:border-[#a0a0a0] dark:bg-neutral-100 dark:border-accent dark:text-neutral-900 transition-colors search-input'
+        placeholder='Search your todo ...'
+        type='search'
     />
-    <ul
-        class="flex-center gap-6 bg-neutral-500 rounded-md p-4 py-3 border-2 border-neutral-400 transition-transform origin-right dark:border-neutral-300 dark:bg-neutral-100"
-    >
-        <li>
-            <button data-option-name="Theme" class="flex-center relative z-0 theme-btn">
-                <span class="sun-icon flex-center"><i class="fa-solid fa-sun font-icon--generic-style dark:text-black"></i></span>
-                <span class="moon-icon flex-center"><i class="fa-solid fa-moon font-icon--generic-style"></i></span>
-            </button>
-        </li>
-        <li>
-            <button
-                id="change-order-btn"
-                data-option-name="Change order"
-                class="flex-center relative before:transition-opacity hover:before:opacity-100"
-            >
-                <i class="fa-solid fa-arrow-pointer font-icon--generic-style dark:text-black"></i>
-            </button>
-        </li>
-    </ul>
+    <div class="flex justify-center relative">
+        <button
+        data-option-name="Options"
+            aria-label='expand additional app options'
+            class='text-white dark:text-black dark:bg-primary border hover:bg-[#272727] bg-[#1f1f1f] border-[#303030] dark:border-accent block w-14 rounded-md text-2xl dark:hover:bg-[#e6e6e6] transition-colors expand-options'
+        >
+            <i class='fa-solid fa-gear pointer-events-none'></i>
+        </button>
+        <ul
+            class='flex flex-col items-center gap-6 bg-[#1b1b1b] rounded-md p-4 py-3 border border-[#303030] transition-transform dark:border-accent dark:bg-neutral-100 absolute -bottom-1 h-0 scale-y-0 opacity-0 origin-top  pointer-events-none z-10 translate-y-full app-options-list'
+        >
+            <li>
+                <button data-option-name='Theme' class='flex-center relative z-0 theme-btn'>
+                    <span class='sun-icon flex-center'
+                        ><i class='fa-solid fa-sun font-icon--generic-style dark:text-black'></i>
+                    </span>
+                    <span class='moon-icon flex-center'><i class='fa-solid fa-moon font-icon--generic-style'></i></span>
+                </button>
+            </li>
+            <li>
+                <button
+                    id='change-order-btn'
+                    data-option-name='Change order'
+                    class='flex-center relative before:transition-opacity hover:before:opacity-100'
+                >
+                    <i class='fa-solid fa-arrow-pointer font-icon--generic-style dark:text-black'></i>
+                </button>
+            </li>
+        </ul>
+    </div>
 </nav>
