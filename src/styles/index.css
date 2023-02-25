@@ -6,194 +6,150 @@
     .button-line {
         @apply w-10 h-1 block rounded-md bg-white;
     }
-
     .app-options-list.active {
-        @apply flex h-auto scale-y-100 opacity-100 pointer-events-auto transition-all
+        @apply flex h-auto scale-y-100 opacity-100 pointer-events-auto transition-all;
     }
-
     .button-hamburger--active-state .button-line:nth-child(2) {
         @apply opacity-0;
     }
-
     .button-hamburger--active-state .button-line:nth-child(1) {
         @apply translate-y-3 rotate-45;
     }
-
     .button-hamburger--active-state .button-line:nth-child(3) {
         @apply -translate-y-3 -rotate-45;
     }
-
     .font-icon--generic-style {
-        @apply text-neutral-100 text-xl h-5;
+        @apply text-neutral-100 dark:text-black text-xl h-5;
     }
-
     .flex-center {
         @apply flex justify-center items-center;
     }
-
     .option-list--hidden {
         @apply w-0 overflow-hidden scale-0;
     }
-
     .theme-btn .sun-icon {
         @apply hidden;
     }
-
     .theme-btn.active .sun-icon {
         @apply flex;
     }
-
     .theme-btn.active .moon-icon {
         @apply hidden;
     }
-
     .tooltip-message {
         @apply absolute bg-neutral-700 text-neutral-50 px-2 rounded-md border border-neutral-900 font-semibold dark:bg-neutral-50 dark:border-neutral-300 dark:text-black opacity-0 z-20;
         animation: originateIn 500ms ease forwards;
     }
-
     .tooltip-message > div,
     .tooltip-message > div::before {
         @apply content-[''] absolute -top-0.5 w-2 h-2 bg-inherit rotate-45;
     }
-
     .label-style {
-        @apply text-neutral-200 text-lg w-fit dark:text-neutral-900;
+        @apply text-white text-lg w-fit dark:text-black transition-colors;
     }
-
     .input-style {
-        @apply rounded-md h-10 text-sky-50 px-2 py-1 bg-neutral-500 border border-neutral-400 focus:outline-neutral-300 focus:outline-1 text-lg hover:bg-neutral-400 transition-colors dark:bg-neutral-100 dark:border-neutral-300 dark:focus:outline-neutral-900 dark:text-neutral-900 dark:hover:bg-neutral-200;
+        @apply rounded-md h-10 text-white px-2 py-1 bg-[#1b1b1b] border border-accentDark focus:outline-[#585858] focus:outline-1 text-lg hover:bg-[#202020] transition-colors dark:bg-neutral-100 dark:border-neutral-300 dark:focus:outline-neutral-900 dark:text-neutral-900 dark:hover:bg-[#ececec];
     }
-
     .search--active {
         @apply bg-green-600 border-green-600 dark:bg-green-600 dark:border-green-700 !important;
     }
-
     .search--active > i {
         @apply dark:text-neutral-100;
     }
-
     .search--active:hover {
         @apply bg-green-900 border-green-700 !important;
     }
-
     #add-todo-btn[disabled] {
         @apply opacity-30 select-none cursor-not-allowed;
     }
-
     .todo-container__item {
         min-width: 250px;
         max-width: 400px;
     }
-
     .todo-container__item.completed::before {
         @apply content-['Completed'] absolute text-3xl font-semibold flex-center rounded-md text-white inset-0 bg-neutral-800/90 transition-colors;
     }
-
     .todo-container__item.completed:hover::before {
         @apply content-[''] bg-neutral-800/40;
     }
-
     .todo-container__item.originateTodo {
         animation: originateTodo 500ms ease forwards;
     }
-
     .todo-container__item.todo-options--active button:not(.completed > button:first-child) {
         @apply opacity-100 pointer-events-auto;
     }
-
     body[data-disabled] .todo-container__item.todo-options--active > button {
         @apply opacity-0 pointer-events-none !important;
     }
-
     .todo-container__item.selected {
         animation: showUp 1s forwards infinite alternate;
     }
-
     .todo-container__item h2::selection {
         @apply bg-black text-white;
     }
-
     .todo-container__item.dragging-enabled {
         @apply cursor-move z-30;
     }
-
     .todo-container__item.dragging-enabled > * {
         @apply pointer-events-none z-30 cursor-move;
     }
-
     .todo-container__item.dragging {
         @apply opacity-40;
     }
-
     .todo-container__item.over {
         @apply border-2 border-dashed;
     }
-
     .todo--very-important {
         @apply bg-red-500;
     }
-
     body[data-disabled]::before {
         @apply content-[''] fixed inset-0 bg-neutral-900/90 z-10;
     }
-
     body[data-disabled] .button-line {
         @apply bg-neutral-200;
     }
-
     body[data-disabled] #change-order-btn > i {
         @apply text-green-400 z-20;
     }
-
     .error-message,
     .success-message {
         @apply fixed top-0 left-1/2 -translate-x-1/2 -translate-y-full font-semibold text-2xl z-10 bg-neutral-700 dark:bg-neutral-100 py-1 border border-neutral-500 rounded-md dark:border-neutral-400 select-none cursor-pointer transition-transform;
     }
-
     .error-message {
         @apply py-2 px-3 text-red-400 dark:text-red-500 text-center w-10/12;
     }
-
     .error-message.visible,
     .success-message.visible {
         animation: showIn 250ms ease forwards;
     }
-
     .success-message {
         @apply px-2 shadow-md dark:border-neutral-300;
     }
-
     @keyframes showIn {
         to {
             @apply translate-y-4;
         }
     }
-
     @keyframes shrinkToZero {
         to {
             @apply w-0;
         }
     }
-
     @keyframes showUp {
         to {
             @apply bg-orange-400;
         }
     }
-
     @keyframes originateTodo {
         to {
             @apply opacity-100 scale-100 shadow-xl;
         }
     }
-
     @keyframes originateIn {
         to {
             @apply opacity-100;
         }
     }
-
     @keyframes hideIn {
         to {
             @apply opacity-0;

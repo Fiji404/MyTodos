@@ -9,21 +9,21 @@
         placeholder='Search your todo ...'
         type='search'
     />
-    <div class="flex justify-center relative">
+    <div class='flex justify-center relative'>
         <button
-        data-option-name="Options"
+            data-option-name='Options'
             aria-label='expand additional app options'
             class='text-white dark:text-black dark:bg-primary border hover:bg-[#272727] bg-[#1f1f1f] border-[#303030] dark:border-accent block w-14 rounded-md text-2xl dark:hover:bg-[#e6e6e6] transition-colors expand-options'
         >
             <i class='fa-solid fa-gear pointer-events-none'></i>
         </button>
         <ul
-            class='flex flex-col items-center gap-6 bg-[#1b1b1b] rounded-md p-4 py-3 border border-[#303030] transition-transform dark:border-accent dark:bg-neutral-100 absolute -bottom-1 h-0 scale-y-0 opacity-0 origin-top  pointer-events-none z-10 translate-y-full app-options-list'
+            class='flex flex-col bg-[#1b1b1b] rounded-md border border-[#303030] transition-transform dark:border-accent dark:bg-neutral-100 absolute -bottom-1 h-0 scale-y-0 opacity-0 origin-top pointer-events-none z-10 translate-y-full app-options-list'
         >
             <li>
-                <button data-option-name='Theme' class='flex-center relative z-0 theme-btn'>
+                <button data-option-name='Theme' class='flex-center relative z-0 py-2 px-4 hover:bg-[#242424] aspect-square dark:hover:bg-[#e4e4e4] transition-colors theme-btn'>
                     <span class='sun-icon flex-center'
-                        ><i class='fa-solid fa-sun font-icon--generic-style dark:text-black'></i>
+                        ><i class='fa-solid fa-sun font-icon--generic-style w-full dark:text-black'></i>
                     </span>
                     <span class='moon-icon flex-center'><i class='fa-solid fa-moon font-icon--generic-style'></i></span>
                 </button>
@@ -31,10 +31,9 @@
             <li>
                 <button
                     id='change-order-btn'
-                    data-option-name='Change order'
-                    class='flex-center relative before:transition-opacity hover:before:opacity-100'
+                    class='flex-center relative before:transition-opacity hover:before:opacity-100 hover:bg-[#242424] aspect-square dark:hover:bg-[#e4e4e4] transition-colors py-2 px-4 text-center w-full'
                 >
-                    <i class='fa-solid fa-arrow-pointer font-icon--generic-style dark:text-black'></i>
+                    <i class='fa-solid fa-arrow-pointer w-fit h-fit font-icon--generic-style dark:text-black'></i>
                 </button>
             </li>
         </ul>
