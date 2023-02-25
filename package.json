@@ -4,8 +4,7 @@
     "scripts": {
         "dev": "astro dev",
         "build": "astro build",
-        "astro-dev": "astro dev",
-        "astro-build": "astro build"
+        "preview": "astro preview"
     },
     "license": "ISC",
     "dependencies": {
