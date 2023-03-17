@@ -7,7 +7,7 @@ module.exports = {
             colors: {
                 primary: 'rgb(248, 248, 248)',
                 accent: 'rgb(230, 230, 230)',
-                accentDark: 'rgb(40, 40, 40)'
+                accentDark: 'rgb(40, 40, 40)',
             },
         },
         maxWidth: {

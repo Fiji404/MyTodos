@@ -55,7 +55,7 @@ const handleDragStart = (e: DragEvent) => {
 
 const handleDragEnd = (e: DragEvent) => (e.target as PossiblitiesOfEventTarget)?.classList.remove('dragging');
 
-const handleDragLeave = (e: DragEvent) => (e.target as PossiblitiesOfEventTarget)?.classList.remove('over') 
+const handleDragLeave = (e: DragEvent) => (e.target as PossiblitiesOfEventTarget)?.classList.remove('over');
 
 const handleDragOver = (e: DragEvent) => e.preventDefault();
 

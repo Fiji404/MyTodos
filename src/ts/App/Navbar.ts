@@ -1,31 +1,22 @@
 export class Navbar {
-    #navbarEl = document.querySelector('.navbar');
-    #appOptionsList = document.querySelector('.app-options-list');
+    #navElement = document.querySelector<HTMLElement>('.navbar');
     constructor() {
-        this.#navbarEl.addEventListener('click', this.#listenClickEvent.bind(this));
-        window.addEventListener('click', this.#closeAppOptions.bind(this));
-        this.#loadUserThemeFromLS();
+        this.#navElement?.addEventListener('click', this.#listenOnThemeChange.bind(this));
+        this.#getUserTheme();
     }
 
-    #closeAppOptions({ target }: MouseEvent) {
+    #listenOnThemeChange({ target }: MouseEvent) {
         if (!(target instanceof Element)) return;
-        if (!target.closest('.expand-options')) this.#appOptionsList.classList.remove('active');
+        const closestValidTarget = target.closest('.theme-btn');
+        if (closestValidTarget) this.#toggleUserTheme(closestValidTarget);
     }
 
-    #listenClickEvent({ target }: MouseEvent) {
-        if (!(target instanceof HTMLElement)) return;
-        const closestTargetElement = target.closest('.theme-btn') || target.closest('.expand-options');
-        if (!closestTargetElement) return;
-        if (closestTargetElement.matches('.theme-btn')) this.#toggleUserTheme(closestTargetElement);
-        if (closestTargetElement.matches('.expand-options')) this.#appOptionsList.classList.toggle('active');
-    }
-
-    #loadUserThemeFromLS() {
-        const userTheme = localStorage.getItem('theme');
-        const themeBtn = document.querySelector('.theme-btn');
-        if (!userTheme) return;
-        themeBtn.classList.toggle('active');
-        if (userTheme === 'dark') document.documentElement.classList.add('dark');
+    #getUserTheme() {
+        const themePreference = localStorage.getItem('theme');
+        const changeThemeBtn = document.querySelector('.theme-btn');
+        if (!themePreference) return changeThemeBtn?.classList.remove('active');
+        changeThemeBtn?.classList.add('active');
+        if (themePreference === 'dark') document.documentElement.classList.add('dark');
     }
 
     #toggleUserTheme(changeThemeBtn: Element) {
