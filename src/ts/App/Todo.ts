@@ -18,10 +18,14 @@ export class Todo {
     }
 
     #createTodoTemplate() {
+        const date = !(new Date(this.date).toString() === 'Invalid Date') && new Date(this.date);
+        const friendlyFormattedDate = this.#convertDateToFriendlyFormat(date !== false ? date.getDate() : 0);
+        const completionDate = date && `${friendlyFormattedDate}.${date.getMonth()}.${date.getFullYear()}`
+
         const todoHTMLTemplate = `<section
         data-id="${this.id}"
         data-finished="${this.isFinished}"
-        class="bg-[#1b1b1b] dark:bg-primary rounded-md todo-container__item border border-[#252525] pb-4 todo-container__item grow dark:border-[#c9c9c9] transition-colors relative hover:todo-options--active shadow-sm opacity-0 scale-110 ${
+        class="bg-[#1b1b1b] dark:bg-primary rounded-md todo-container__item border border-[#272727] pb-4 todo-container__item grow dark:border-[#c9c9c9] transition-colors relative hover:todo-options--active shadow-sm opacity-0 scale-110 ${
             this.isFinished ? 'completed' : ''
         } originateTodo"
     >
@@ -36,7 +40,7 @@ export class Todo {
             ><i class="fa-regular fa-circle-xmark text-2xl text-red-600"></i>
         </button>
         <header
-            class="py-3 px-1 border-b border-b-[#b8b8b8] bg-[#111] dark:bg-[#e0e0e0] transition-colors rounded-md rounded-br-none rounded-bl-none"
+            class="py-3 px-1 border-b border-b-[#2c2c2c] dark:border-b-[#b3b3b3] bg-[#1d1d1d] dark:bg-[#e0e0e0] transition-colors rounded-md rounded-br-none rounded-bl-none"
         >
             <h2
                 class="text-2xl text-center font-semibold text-neutral-100 dark:text-neutral-900 transition-colors"
@@ -52,19 +56,18 @@ export class Todo {
                 !this.date
                     ? ''
                     : `<div class="mt-8 ml-auto w-fit">
-                <p class="inline text-neutral-100 dark:text-neutral-900 transition-colors">Ends</p>
+                <p class="inline text-neutral-100 dark:text-neutral-900 transition-colors">${date && new Date().getDate() > date.getDate() ? 'Ended' : 'Ends' }</p>
                 
                      
                         <time
-                            class="bg-neutral-600 px-3 py-1 rounded-md w-fit ml-auto text-neutral-100 border border-neutral-400 select-none dark:bg-neutral-100 dark:text-neutral-900 transition-colors"
+                            class="ml-1 bg-[#1a1a1a] px-3 py-1 rounded-md w-fit text-neutral-100 border border-[#292929] dark:border-[#cacaca] select-none dark:bg-neutral-100 dark:text-neutral-900 transition-colors"
                             datetime="17.04.2022"
                         >
-                            ${
-                                // transformedDateToUserFriendlyFormat === ISOStringToDateObject.getDate()
-                                //     ? `${transformedDateToUserFriendlyFormat}.${ISOStringToDateObject.getMonth()}.${ISOStringToDateObject.getFullYear()}`
-                                //     : this.#transformDateToUserFriendlyFormat(ISOStringToDateObject.getDate())
-                                0
-                            }
+                           ${
+                               date && friendlyFormattedDate === date.getDate()
+                                   ? completionDate
+                                   : friendlyFormattedDate
+                           }
                         </time>`
             }
         </div>
@@ -72,37 +75,32 @@ export class Todo {
         return todoHTMLTemplate;
     }
 
-    #transformDateToUserFriendlyFormat(day: number) {
+    #convertDateToFriendlyFormat(day: number) {
         const currentDay = new Date().getDate();
-        const checkIsPassedDayBeginInFuture = this.#transformFutureDayToFriendlyName(day, currentDay);
-        const checkIsDayPassedInPast = this.#checkIsDayPassedInPast(day, currentDay);
-        if (checkIsPassedDayBeginInFuture) return checkIsPassedDayBeginInFuture;
-        if (checkIsDayPassedInPast) return checkIsDayPassedInPast;
+        const formattedFutureDayInFriendlyFormat = this.#transformFutureDayToFriendlyName(day, currentDay);
+        const formattedPassedDayInFriendlyFormat = this.#checkIsDayPassedInPast(day, currentDay);
+        if (formattedFutureDayInFriendlyFormat) return formattedFutureDayInFriendlyFormat;
+        if (formattedPassedDayInFriendlyFormat) return formattedPassedDayInFriendlyFormat;
         return day;
     }
     #transformFutureDayToFriendlyName(day: number, currentDay: number) {
-        const transformedFutureDateToFriendlyFormat =
-            day === currentDay
-                ? 'Today'
-                : day === currentDay + 1
-                ? 'Tomorrow'
-                : day === currentDay + 2
-                ? 'In 2 days'
-                : day === currentDay + 3
-                ? 'In 3 days'
-                : false;
+        const POSSIBLE_FUTURE_DATE_FORMATS: Record<string, string> = {
+            0: 'Today',
+            1: 'Tomorrow',
+            2: 'in 2 days',
+            3: 'in 3 days',
+        };
+        const transformedFutureDateToFriendlyFormat = POSSIBLE_FUTURE_DATE_FORMATS[day - currentDay] || day;
         return transformedFutureDateToFriendlyFormat;
     }
 
     #checkIsDayPassedInPast(day: number, currentDay: number) {
-        const transformedPastDateToFriendlyFormat =
-            day === currentDay - 1
-                ? 'Yesterday'
-                : day === currentDay - 2
-                ? '2 days ago'
-                : day === currentDay - 3
-                ? '3 days ago'
-                : false;
+        const POSSIBLE_PASSED_DATE_FORMATS: Record<string, string> = {
+            0: 'Yesterday',
+            1: '2 days ago',
+            2: '3 days ago',
+        };
+        const transformedPastDateToFriendlyFormat = POSSIBLE_PASSED_DATE_FORMATS[currentDay - day] || day;
         return transformedPastDateToFriendlyFormat;
     }
 }
