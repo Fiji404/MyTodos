@@ -41,13 +41,13 @@ export class App {
         if (completedTodoInLS) completedTodoInLS.isFinished = true;
         localStorage.setItem('todos', JSON.stringify(userTodosLS));
         todoElementClone?.classList.add('completed');
+        todoElementClone.dataset.finished = 'true';
     }
 
     #removeTodoFromLS(todoId: string) {
         const userTodosLS = this.#getUserTodosFromLS();
-        const foundTodoById = userTodosLS?.findIndex(todo => todo.id === todoId);
-        console.log(foundTodoById);
-        if (foundTodoById) userTodosLS?.splice(foundTodoById, 1);
+        const foundTodoById = userTodosLS?.findIndex(todo => todo.id === todoId) as number;
+        if (foundTodoById !== -1) userTodosLS?.splice(foundTodoById, 1);
         localStorage.setItem('todos', JSON.stringify(userTodosLS));
     }
 
@@ -68,7 +68,7 @@ export class App {
         e.preventDefault();
         const formData = [...new FormData(this.#todoFormElement).values()] as [string, string, string];
         const todoID = crypto.randomUUID();
-        const todo = new Todo(...formData, false, todoID).renderTodo();
+        const todo = new Todo(...formData, false, todoID).renderTodo(true);
         this.#userTodos = [...document.querySelectorAll('.todo-container__item')];
         const userTodosLS = this.#getUserTodosFromLS() || [];
         userTodosLS.push(todo);
@@ -85,8 +85,8 @@ export class App {
     }
 
     #renderTodosFromLS() {
-        const userSavedTodos = this.#getUserTodosFromLS();
-        const completedTodos = userSavedTodos?.filter(({ isFinished }) => isFinished) as Todo[];
+        const userSavedTodos = this.#getUserTodosFromLS()?.filter(({ isFinished }) => !isFinished);
+        const completedTodos = this.#getUserTodosFromLS()?.filter(({ isFinished }) => isFinished)!;
         if (!userSavedTodos) return;
         [...userSavedTodos, ...completedTodos].forEach(({ title, description, date, id, isFinished }) =>
             new Todo(title, description, date, isFinished, id).renderTodo()

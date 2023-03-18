@@ -53,7 +53,20 @@ declare module 'js-datepicker' {
          *
          * Default - ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
          */
-        customMonths?: [string, string, string, string, string, string, string, string, string, string, string, string];
+        customMonths?: [
+            string,
+            string,
+            string,
+            string,
+            string,
+            string,
+            string,
+            string,
+            string,
+            string,
+            string,
+            string
+        ];
 
         /**
          * You can customize the display of the month names in the overlay view by providing an array of 12 strings. Keep in mind that if the values are too long, it could produce undesired results in the UI.

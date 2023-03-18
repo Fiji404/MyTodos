@@ -8,28 +8,32 @@ export class Todo {
         public id: string
     ) {}
 
-    renderTodo() {
+    renderTodo(isTodoAddedNow?: boolean) {
         const todoHTMLTemplate = this.#createTodoTemplate();
-        if (todoHTMLTemplate) this.#addTodoBtn.insertAdjacentHTML('beforebegin', todoHTMLTemplate);
+        const firstCompletedTodo = document.querySelector('.todo-container__item[data-finished="true"]');
+        if (isTodoAddedNow && firstCompletedTodo)
+            firstCompletedTodo.insertAdjacentHTML('beforebegin', todoHTMLTemplate);
+        else this.#addTodoBtn.insertAdjacentHTML('beforebegin', todoHTMLTemplate);
         return this;
     }
 
     #createTodoTemplate() {
         const todoHTMLTemplate = `<section
         data-id="${this.id}"
-        class="bg-[#1b1b1b] dark:bg-primary rounded-md todo-container__item border border-[#252525] pb-4 todo-container__item grow dark:border-[#c9c9c9] transition-colors relative hover:todo-options--active shadow-2xl opacity-0 scale-110 ${
+        data-finished="${this.isFinished}"
+        class="bg-[#1b1b1b] dark:bg-primary rounded-md todo-container__item border border-[#252525] pb-4 todo-container__item grow dark:border-[#c9c9c9] transition-colors relative hover:todo-options--active shadow-sm opacity-0 scale-110 ${
             this.isFinished ? 'completed' : ''
         } originateTodo"
     >
         <button
             aria-label="Mark todo as completed"
-            class="absolute top-0 -right-2 -translate-y-1/2 hover:bg-green-800 block h-5 rounded-full transition-all pointer-events-none opacity-0 complete-todo-btn"
-            ><i class="fa-regular fa-circle-check text-xl text-green-500"></i>
+            class="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 hover:bg-[#2e8536fd] flex-center h-5 rounded-full transition-colors pointer-events-none opacity-0 complete-todo-btn"
+            ><i class="fa-regular fa-circle-check text-2xl text-green-500"></i>
         </button>
         <button
             aria-label="Remove todo"
-            class="h-5 absolute top-0 -translate-y-1/2 -left-2 hover:bg-red-800 rounded-full transition-all pointer-events-none opacity-0 remove-todo-btn"
-            ><i class="fa-regular fa-circle-xmark text-xl text-red-600"></i>
+            class="flex-center absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 h-5 hover:bg-[#7e0303] rounded-full transition-all pointer-events-none opacity-0 remove-todo-btn"
+            ><i class="fa-regular fa-circle-xmark text-2xl text-red-600"></i>
         </button>
         <header
             class="py-3 px-1 border-b border-b-[#b8b8b8] bg-[#111] dark:bg-[#e0e0e0] transition-colors rounded-md rounded-br-none rounded-bl-none"

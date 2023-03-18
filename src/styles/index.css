@@ -45,7 +45,8 @@
         @apply text-white text-lg w-fit dark:text-black transition-colors;
     }
     .input-style {
-        @apply rounded-md h-10 outline-none text-white px-2 py-1 bg-[#1b1b1b] border border-accentDark text-lg hover:bg-[#202020]  dark:bg-neutral-100 dark:border-neutral-300 dark:text-neutral-900 dark:hover:bg-[#ececec] dark:focus:border-[#505050] transition-colors;
+        @apply rounded-[4px] outline-none text-white px-2 py-1 bg-[#1b1b1b] border border-accentDark text-lg hover:bg-[#202020]  dark:bg-neutral-100 dark:border-neutral-300 dark:text-neutral-900 dark:hover:bg-[#ececec] dark:focus:border-[#505050]
+        focus:border-[#686868] transition-colors;
     }
     .search--active {
         @apply bg-green-600 border-green-600 dark:bg-green-600 dark:border-green-700 !important;
